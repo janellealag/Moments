@@ -1,0 +1,114 @@
+<%- include('../../../templates/businessmanNavbar.ejs') -%>  
+
+    <!--==========================
+  Services Section
+============================-->
+  
+  <section id="services">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="section-title">Reservations</h3>
+          <div class="section-title-divider"></div>
+     
+        </div>
+      </div>
+        
+      <div class="row">
+        <!-- YOUR CODES HERE -->
+		<fieldset class="well the-fieldset" style="border-color: black; border-width: 3px; background-color: light gray">
+        
+          <div class="card-block">
+		<h4>Organizer's Name$organizerName$($businessname$)</h4>
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event Name: </h5>
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event Date: </h5>
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event Time: </h5>
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event Location: </h5>
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Event Description: </h5>
+		<br>
+
+		<h4>Items or Sevice to be Reserved</h4>
+			<table width="70%" border="1px" align=center>
+				<tr>
+					<th>No.</th>
+					<th>Item/Service</th>
+					<th>Item/Service</th>
+					<th>Qty</th>
+					<th>Date Of Claim</th>
+					<th>Total Amount to pay</th>
+					<th>Amount Paid</th>
+					<th>Balance</th>
+				
+				</tr>
+				<tr>
+					<td>1</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+			<br>
+			
+			<table width="70%" border="1px" align=center>
+				<tr>
+					<th>Total Amount to be paid</th>
+					<td>900000</td>
+				</tr>
+				<tr>
+					<th>Balance:</th>
+					<td>100</td>
+				</tr>
+			</table>
+			<br>
+			<table align=center>
+			<tr>
+			<td><button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#viewDepositSlip">View Deposit Slip</button></td>
+			<td><button type="submit" class="btn btn-primary" formmethod="post" formaction="/">Confirm</button></td>
+			<td><button type="submit" class="btn btn-primary" formmethod="post" formaction="/">Reject</button></td>
+			</tr>
+			</table>
+				
+				
+				
+        </div>
+        </fieldset>
+		<!--==========================
+  modal for view deposit slip
+============================-->  
+<div class="modal fade" id="viewDepositSlip" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="lineModalLabel">Deposit Slip</h3>
+		</div>
+		<div class="modal-body">
+	
+              <button type="submit" class="btn btn-services" data-dismiss="modal">Okay</button>
+            
+		</div>
+	</div>
+  </div>
+</div>
+</div>
+	<!-- END OF YOUR CODES -->
+      </div>
+    </div>  
+  </section>
+  
+  
+<%- include('../../../templates/footer.ejs') -%>

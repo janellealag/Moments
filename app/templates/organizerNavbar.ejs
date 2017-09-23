@@ -1,0 +1,155 @@
+<html lang="en">
+<head>
+	<title>Moments</title>
+	
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+    
+  <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
+	<meta property="og:title" content="">
+	<meta property="og:image" content="">
+	<meta property="og:url" content="">
+	<meta property="og:site_name" content="">
+	<meta property="og:description" content="">
+  
+  <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:site" content="">
+	<meta name="twitter:title" content="">
+	<meta name="twitter:description" content="">
+	<meta name="twitter:image" content="">
+  
+  <!-- Place your favicon.ico and apple-touch-icon.png in the template root directory -->
+	<link href="favicon.ico" rel="shortcut icon">
+  
+  <!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800" rel="stylesheet"> 
+  
+  <!-- Bootstrap CSS File -->
+	<link href="/assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Libraries CSS Files -->
+	  <link href="/assets/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	  <link href="/assets/lib/animate-css/animate.min.css" rel="stylesheet">
+  
+  <!-- Main Stylesheet File -->
+	<link href="/assets/css/style.css" rel="stylesheet">
+ 
+  <!-- For dynamic date and time -->
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	  <script type="text/javascript" src="/assets/date_time.js"></script>
+  
+</head>
+
+<body>
+
+<div id="preloader"></div>
+  
+
+<!--==========================
+  Navbar
+============================-->
+  <header id="header">
+    <div class="container">
+    
+      <div id="logo" class="pull-left">
+        <img src="/assets/img/logo.png" alt="" title="" /></img>
+
+      </div>
+        
+      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li class="menu-active"><a href="/organizer">Home</a></li>
+		  <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Events<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="" data-toggle="modal" data-target="#createEventNav">Create New Event</a></li>
+							<li class="divider"></li>
+							<li><a href="/organizer/upcomingEvents">View Upcoming Events</a></li>
+							<li><a href="/organizer/recentEvents">View Recent Events</a></li>
+						
+                        </ul>
+                    </li>
+
+		  	  <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Accounts<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/organizer/unpaidAccounts">Unpaid Accounts</a></li>
+							<li><a href="/organizer/paidAccounts">Paid Accounts</a></li>
+
+				
+                        </ul>
+                    </li>
+          <li><a href="/organizer/Profile">Profile</a></li>
+		  <li><a href="/login/logout" >Logout</a></li>
+		  <li><a>| &nbsp;&nbsp; Signed in as <%= user %> &nbsp;&nbsp;&nbsp;&nbsp;<span id="date_time"></span></a>
+				<script type="text/javascript">window.onload = date_time('date_time');</script>  
+        </ul>
+      </nav><!-- #nav-menu-container -->
+    </div>
+  </header><!-- #header -->
+        
+<!--==========================
+  modal for create event
+============================-->  
+<div class="modal fade" id="createEventNav" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="lineModalLabel">ORGANIZE NEW EVENT</h3>
+		</div>
+		<div class="modal-body">
+			<form>
+              <div class="form-group">
+				<label for="EventName">Event Name</label>
+                <input type="" class="form-control" id="EventName" placeholder="Event name(eg. Grade's Burial, Sean's Birthday)" >
+				<br>
+				<label for="EventLocation">Event Location</label>
+                <table width=600px>
+					<tr>
+					<td style="text-align: left;">Country:</td>
+					<td style="text-align: left;">Province:</td>
+					<td style="text-align: left;">City/Municipality:</td>
+
+					</tr><tr>
+					<td style="text-align: left;">
+					<select name="country" id="country" onchange="setStates();">
+
+
+					  <option value="Philippines">Philippines</option>
+					</select>
+					</td>
+
+					<td style="text-align: left;">
+					<select name="state" id="state" onchange="setCities();">
+					  <option value="">Please select a Country</option>
+					</select>
+					</td>
+					<td style="text-align: left;">
+					<select name="city"  id="city">
+					  <option value="">Please select a Country</option>
+					</select>
+					</td>
+					</tr>
+
+					</table>
+				<br>
+				<label for="EventDescription">Event Description</label>
+                <input type="" class="form-control" id="EventDescription" placeholder="Event Description(eg. Happy gathering of the family)" >
+				<br>
+				<label for="EventDate">Event Date</label>
+			
+               
+				<br>
+
+              <button type="submit" class="btn btn-services" data-dismiss="modal" >Create</button>
+				<button type="clear" class="btn btn-services" data-dismiss="modal" >Clear</button>
+            </form>
+		</div>
+	</div>
+  </div>
+</div>
+</div>

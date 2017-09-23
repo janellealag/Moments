@@ -1,0 +1,142 @@
+<%- include('../../../templates/adminNavbar.ejs') -%>
+    <!--==========================
+  Services Section
+============================-->
+  <section id="services">
+    <div class="container wow fadeInUp">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="section-title">APPLICANTS</h3>
+          <div class="section-title-divider"></div>
+     
+        </div>
+      </div>
+        
+      <div class="row">
+        <!-- YOUR CODES HERE -->
+		
+	<div class="container" align=center>
+    <div class="row" >
+        <div>
+            <fieldset class="well the-fieldset" style="width: 50rem; border-color: black; border-width: 3px; background-color: light gray">
+				<div class="card" style="width: 40rem;">
+					<div class="card-block">
+						<h3 class="card-title" ><strong>Businessman Name</strong></h3>
+						<h5  class="card-text" align=left>Email address:</h5>
+						<h5 class="card-text" align=left>Telephone Number:</h5>
+						<h5 class="card-text" align=left>Cellphone Number:</h5>
+						<table align=center>
+							<tr>
+								<td><button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#confirmationOfBusinessman">Evaluate</button></td>
+
+							</tr>
+						</table>
+					</div>
+				</div>
+            </fieldset> 
+        </div>
+    </div>
+	
+	<!-- END OF YOUR CODES -->
+      </div>
+    </div>  
+  </section>
+  <!--==========================
+  modal for Confirmation of businessman
+============================-->  
+<div class="modal fade" id="confirmationOfBusinessman" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="lineModalLabel">EVALUATE APPLICANT</h3>
+		</div>
+		<div class="modal-body">
+			
+            <!-- content goes here -->
+			<form>
+              <div class="form-group">
+			  <fieldset style="width: 500px;">
+			  <legend><strong>Personal Information</strong></legend>
+                <label for="FName">First Name</label>
+                <input type="text" class="form-control" id="FName" placeholder="" readonly>
+				<br>
+				<label for="LName">Last Name</label>
+                <input type="text" class="form-control" id="LName" placeholder="" readonly>
+				<br>
+				<label for="Email">Email Address</label>
+                <input type="email" class="form-control" id="Email" placeholder="" readonly>
+
+		
+				</fieldset>
+						<br>
+				<fieldset style="width: 500px;">
+			  <legend><strong>Contact Information</strong></legend>
+            
+				<label for="TelephoneNumber">Telephone Number</label>
+                <input type="number" class="form-control" id="TelephoneNumber" readonly >
+				<label for="CellphoneNumber">Cellphone Number*</label>
+                <input type="number" class="form-control" id="CellphoneNumber"  readonly>
+					</fieldset>
+					<br>
+			 <fieldset style="width: 500px;">
+			  <legend><strong>Business Information</strong></legend>
+				<label for="BusinessName">Business Name*</label>
+                <input type="text" class="form-control" id="BusinessName" placeholder="Business Name(eg. Cherish Event Company)" required>
+				<label for="BankName">Bank Name*</label>
+                <input type="text" class="form-control" id="BankName" placeholder="Bank Name(eg. BDO, Landbank)" required>
+				<label for="BankNumber">Bank Number*</label>
+                <input type="text" class="form-control" id="BankNumber" placeholder="Bank Number" required>
+				<label for="BIR">Bureau Of Internal Revenue Number(BIR No.)*</label>
+                <input type="text" class="form-control" id="BIR" placeholder="BIR Number" required>
+				<label for="DTI">Department of Trade and Industry Number(DTI No.)*</label>
+                <input type="text" class="form-control" id="DTI" placeholder="DTI Number" required>
+				<script type="text/javascript" src="/assets/city_state.js"></script>
+<br>
+<fieldset style="width: 500px;">
+<legend><strong>Business Location Information</strong></legend>
+<table width=600px>
+<tr>
+<td style="text-align: left;">Country:</td>
+<td style="text-align: left;">Province:</td>
+<td style="text-align: left;">City/Municipality:</td>
+
+</tr><tr>
+<td style="text-align: left;">
+<select name="country" id="country" onchange="setStates();">
+
+
+  <option value="Philippines">Philippines</option>
+</select>
+</td>
+
+<td style="text-align: left;">
+<select name="state" id="state" onchange="setCities();">
+  <option value="">Please select a Country</option>
+</select>
+</td>
+<td style="text-align: left;">
+<select name="city"  id="city">
+  <option value="">Please select a Country</option>
+</select>
+</td>
+</tr>
+
+</table>
+</fieldset>
+				</fieldset>
+				<br>
+				
+              <button type="submit" class="btn btn-default">Approve</button>
+			  <button class="btn btn-default">Reject</button>
+		
+            </form>
+
+		</div>
+		
+	</div>
+  </div>
+</div>
+</div>
+  
+<%- include('../../../templates/footer.ejs') -%>
