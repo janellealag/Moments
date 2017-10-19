@@ -78,7 +78,7 @@ th, td {
     <td><%= i.strItemName%></td>
 	<td><%= i.decRentalFinalPrice%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decItemRefundPercentage%></td>
+	<td><%= parseInt(i.decItemRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
 		
 	<td><a class="itemdescription btn btn-primary" href="" data-toggle="modal" data-target="#itemdesc" data-itemdescription="<%= i.strItemDescription %>">Description</a> 
@@ -130,7 +130,7 @@ th, td {
     <td><%= i.strServiceName%></td>
 	<td><%= i.decRentalFinalPrice%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decServiceRefundPercentage%></td>
+	<td><%= parseInt(i.decServiceRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
 		
 	<td><a class="servicedescription btn btn-primary" href="" data-toggle="modal" data-target="#servicedesc" data-servicedescription="<%= i.strServiceDescription%>" >Description</a> 

@@ -98,7 +98,7 @@ th, td {
     <% } %>
 	<td><%= i.decRentalFinalPrice%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decItemRefundPercentage%></td>
+	<td><%= parseInt(i.decItemRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
 		<form method="post" action="/organizer/cancelItemTransaction">
 	<td><a class="itemdescription btn btn-primary" href="" data-toggle="modal" data-target="#itemdesc" data-itemdescription="<%= i.strItemDescription %>">Description</a> 
@@ -115,7 +115,7 @@ th, td {
 		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
 		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
 		<input type="hidden" name="itemno" value="<%= i.intItemNo %>">
-        <% if (i.intRentalStatus == 0 && i.intRentalStatus == 3) { %>
+        <% if (i.intRentalStatus != 0 || i.intRentalStatus != 3) { %>
 		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to cancel the reservation for this item?');">Cancel</button>
         <% } %>
 		</td>
@@ -166,7 +166,7 @@ th, td {
     <% } %>
 	<td><%= i.decServiceFinalPrice%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decServiceRefundPercentage%></td>
+	<td><%= parseInt(i.decServiceRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
 		<form method="post" action="/organizer/cancelServiceTransaction">
 	<td><a class="servicedescription btn btn-primary" href="" data-toggle="modal" data-target="#servicedesc" data-servicedescription="<%= i.strServiceDescription%>" >Description</a> 
@@ -183,7 +183,7 @@ th, td {
 		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
 		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
 		<input type="hidden" name="genserviceno" value="<%= i.intGenServiceNo %>">
-        <% if (i.intServiceStatus == 0 && i.intServiceStatus == 3) { %>
+        <% if (i.intServiceStatus != 0 || i.intServiceStatus != 3) { %>
 		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to cancel the reservation for this service?');">Cancel</button>
         <% } %>
 		

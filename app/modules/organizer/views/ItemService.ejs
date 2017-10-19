@@ -88,7 +88,7 @@ th, td {
 	
     <td><%= i.strItemName%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decItemRefundPercentage%></td>
+	<td><%= parseInt(i.decItemRefundPercentage * 100)  %></td>
 	<td><%= i.strProviderFName%> <%= i.strProviderLName%></td>
 	<td><a class="IVDButton btn btn-primary" href="" data-toggle="modal" data-target="#IVDModal" onclick="idisable()"
 					data-ivd1="<%= i.strItemDescription %>"
@@ -135,7 +135,7 @@ th, td {
 	
     <td><%= i.strServiceName%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decServiceRefundPercentage%></td>
+	<td><%= parseInt(i.decServiceRefundPercentage * 100)  %></td>
 	<td><%= i.strProviderFName%> <%= i.strProviderLName%></td>
 	<td><a class="SVDButton btn btn-primary" href="" data-toggle="modal" data-target="#SVDModal" onclick="sdisable()"
 					data-svd1="<%= i.strServiceDescription %>"

@@ -19,6 +19,9 @@
               <div class="section-title-divider"></div>
             
             <div style="overflow-y: scroll;min-height:300;">
+            <% if (re.length == 0 || re == 'undefined') { %>
+                <h5>No Items</h5>
+            <% } else {%>
             <table width="1000px" border="2px" align="center">
                 <tr>
                     <th align="center">Item No.</th>
@@ -56,6 +59,7 @@
                     <% }); %>
               
             </table>
+            <% } %> 
             </div>
             </center>
 
@@ -69,6 +73,9 @@
           <div class="section-title-divider"></div>
         
         <div style="overflow-y: scroll;min-height:300;">
+        <% if (se.length==0 || se=='underfined'){%>
+        <h5>No Services</h5>
+        <% } else{%>
         <table width="1000px" border="2px" align="center">
             <tr>
                 <th>Service No.</th>
@@ -105,6 +112,7 @@
             </tr>
             <% }); %>
         </table>
+        <% }%>
         </div>
         </center>
         
@@ -457,7 +465,7 @@
               $('#ItemDescription').text($(this).data('itemdesc'))
              
               $('#vitemrefund').val($(this).data('vitemrefund'))
-              $('#itemrefund').val($(this).data('vitemrefund'))
+              $('#itemrefund').val($(this).data('vitemrefund')*100)
             var t = ($(this).data('itemavailabledays')).split(",")
 //            var count = 0;
             for(j=0; j<t.length; j++){
@@ -493,7 +501,7 @@
               $('#ServicePrice').val($(this).data('serviceprice'))
               $('#ServiceDescription').val($(this).data('servicedesc'))
               $('#vservicerefund').val($(this).data('servicerefund'))
-              $('#servicerefund').val($(this).data('servicerefund'))
+              $('#servicerefund').val($(this).data('servicerefund')*100)
               var s = ($(this).data('serviceavailabledays')).split(",")
 //            var count = 0;
             for(j=0; j<s.length; j++){

@@ -56,7 +56,7 @@ var profile= req.session.user;
 				OR LOWER(strServiceDescription) LIKE LOWER("${toSearch}%") 
 				OR LOWER(strServiceDescription) LIKE LOWER("%${toSearch}"))
 				AND intGenServiceNo NOT IN(SELECT intGenServiceNo from tblServices WHERE ${transactionNum[0].intTransactionNo}=intTransactionNo)
-				AND  strServiceAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%"
+				AND  strServiceAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%" AND intGenServiceStatus=1
 				`, (err,resultsServices, fields) =>{
 	if(err){console.log(err);}
 	console.log("RESULTS");
@@ -70,7 +70,7 @@ var profile= req.session.user;
 					OR LOWER(strItemDescription) LIKE LOWER("${toSearch}%") 
 					OR LOWER(strItemDescription) LIKE LOWER("%${toSearch}"))
 					AND intItemNo NOT IN(SELECT intItemNo from tblRental WHERE ${transactionNum[0].intTransactionNo}=intTransactionNo)
-				AND  strItemAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%"  
+				AND  strItemAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%"  AND intItemStatus=1
 					`, (err,resultsItems, fields) =>{
 					if(err){console.log(err);}
 					console.log(resultsItems);
@@ -287,7 +287,7 @@ var profile= req.session.user;
 				OR LOWER(strServiceDescription) LIKE LOWER("${toSearch}%") 
 				OR LOWER(strServiceDescription) LIKE LOWER("%${toSearch}")) 
 				AND intGenServiceNo NOT IN(SELECT intGenServiceNo from tblServices WHERE ${transactionNum[0].intTransactionNo}=intTransactionNo)  
-				AND  strServiceAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%"`, (err,resultsServices, fields) =>{if(err){console.log(err);}
+				AND  strServiceAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%" AND intGenServiceStatus=1`, (err,resultsServices, fields) =>{if(err){console.log(err);}
 
 		db.query(`SELECT * 
 				FROM tblItem JOIN tblProvider ON tblItem.intProviderID=tblProvider.intProviderID
@@ -298,7 +298,7 @@ var profile= req.session.user;
 					OR LOWER(strItemDescription) LIKE LOWER("${toSearch}%") 
 					OR LOWER(strItemDescription) LIKE LOWER("%${toSearch}"))
 					AND intItemNo NOT IN(SELECT intItemNo from tblRental WHERE ${transactionNum[0].intTransactionNo}=intTransactionNo)
-					AND  strItemAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%"
+					AND  strItemAvailableDay LIKE "%${EVENTDAY[0].EVENTDAY}%" AND intItemStatus=1
 					`, (err,resultsItems, fields) =>{
 					console.log(resultsItems);
 					console.log(resultsServices);
@@ -477,11 +477,11 @@ var profile= req.session.user;
 		db.query(`UPDATE tblServices SET intServiceStatus=1 WHERE intTransactionNo=${req.body.transactionno} AND intGenServiceNo=${req.body.genserviceno}` , (err,results, fields) =>{
     db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
 db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.body.eventNo}`,(err,results,fields)=>{console.log(results);if(err)console.log(err);
-db.query(`SELECT  *
+db.query(`SELECT  *,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
 	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
-db.query(`SELECT  *
+db.query(`SELECT  *,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
 	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);

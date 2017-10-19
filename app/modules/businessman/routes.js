@@ -294,7 +294,7 @@ router.post('/rejectItem', (req,res)=>{
 
 router.post('/serviceeditAmount', (req,res)=>{
     
-    db.query(`Update tblservices set decServiceFinalPrice=${req.body.servicefinalprice} , intServiceStatus = ${2} where intTransactionNo = ${req.body.servno}`, (err,results,fields)=>{
+    db.query(`Update tblservices set decServiceFinalPrice= ${req.body.servicefinalprice} , intServiceStatus = ${2} where intTransactionNo = ${req.body.servno}`, (err,results,fields)=>{
         if (err) console.log(err);
         
 
