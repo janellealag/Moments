@@ -24,6 +24,8 @@
   <!-- Place your favicon.ico and apple-touch-icon.png in the template root directory -->
 	<link href="favicon.ico" rel="shortcut icon">
   
+    <!-- Sweet Alert -->
+   <link href="/assets/bootstrap-sweetalert-master/dist/sweetalert.css" rel="stylesheet"> 
   <!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800" rel="stylesheet"> 
   
@@ -65,10 +67,11 @@
 		  <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="dropdown-toggle">Events<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="" data-toggle="modal" data-target="#createEventNav">Create New Event</a></li>
+                            <li><a href="/organizer/createEvent" >Create New Event</a></li>
 							<li class="divider"></li>
 							<li><a href="/organizer/upcomingEvents">View Upcoming Events</a></li>
-							<li><a href="/organizer/recentEvents">View Recent Events</a></li>
+							<li><a href="/organizer/recentEvents">View Previous Events</a></li>
+							<li><a href="/organizer/cancelledEvents">View Cancelled Events</a></li>
 						
                         </ul>
                     </li>
@@ -82,74 +85,52 @@
 				
                         </ul>
                     </li>
-          <li><a href="/organizer/Profile">Profile</a></li>
-		  <li><a href="/login/logout" >Logout</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#profile">Profile</a></li>
+		  <li><a href="/login/logout" onclick="return confirm('Do you wish to Logout?');">Logout</a></li>
 		  <li><a>| &nbsp;&nbsp; Signed in as <%= user %> &nbsp;&nbsp;&nbsp;&nbsp;<span id="date_time"></span></a>
 				<script type="text/javascript">window.onload = date_time('date_time');</script>  
         </ul>
       </nav><!-- #nav-menu-container -->
     </div>
   </header><!-- #header -->
-        
-<!--==========================
-  modal for create event
-============================-->  
-<div class="modal fade" id="createEventNav" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-			<h3 class="modal-title" id="lineModalLabel">ORGANIZE NEW EVENT</h3>
-		</div>
-		<div class="modal-body">
-			<form>
-              <div class="form-group">
-				<label for="EventName">Event Name</label>
-                <input type="" class="form-control" id="EventName" placeholder="Event name(eg. Grade's Burial, Sean's Birthday)" >
-				<br>
-				<label for="EventLocation">Event Location</label>
-                <table width=600px>
-					<tr>
-					<td style="text-align: left;">Country:</td>
-					<td style="text-align: left;">Province:</td>
-					<td style="text-align: left;">City/Municipality:</td>
-
-					</tr><tr>
-					<td style="text-align: left;">
-					<select name="country" id="country" onchange="setStates();">
-
-
-					  <option value="Philippines">Philippines</option>
-					</select>
-					</td>
-
-					<td style="text-align: left;">
-					<select name="state" id="state" onchange="setCities();">
-					  <option value="">Please select a Country</option>
-					</select>
-					</td>
-					<td style="text-align: left;">
-					<select name="city"  id="city">
-					  <option value="">Please select a Country</option>
-					</select>
-					</td>
-					</tr>
-
-					</table>
-				<br>
-				<label for="EventDescription">Event Description</label>
-                <input type="" class="form-control" id="EventDescription" placeholder="Event Description(eg. Happy gathering of the family)" >
-				<br>
-				<label for="EventDate">Event Date</label>
-			
-               
-				<br>
-
-              <button type="submit" class="btn btn-services" data-dismiss="modal" >Create</button>
-				<button type="clear" class="btn btn-services" data-dismiss="modal" >Clear</button>
-            </form>
+          <!--==========================
+  MODAL PROFILE
+============================-->
+	<div class="modal fade" id="profile" role="dialog">
+		<div class="modal-dialog">
+		<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">PROFILE</h4>
+				</div>
+				<div class="modal-body">
+				
+					<label>Your ID</label>
+					<input type="" class="form-control"id="" name="" value=<%= profile.intOrganizerID %> readonly> 
+					<label>First Name</label>
+					<input type="" class="form-control"id="" name="" value=<%= profile.strOrganizerFName %> readonly> 
+					<label>Last Name</label>
+					<input type=""class="form-control" id="" name="" value=<%= profile.strOrganizerLName %> readonly> 
+					<label>Email</label>
+					<input type="" class="form-control"id="" name="" value=<%= profile.strOrganizerEmail %> readonly> 
+					<label>Telephone Number</label>
+					<input type="" class="form-control"id="" name="" value=<%= profile.strOrganizerTel %> readonly> 
+					<label>Cellphone Number</label>
+					<input type="" class="form-control"id="" name="" value=<%= profile.strOrganizerCell %> readonly> 
+					<label>Business Name</label>
+                     <% if (profile.strOrganizerBusinessName+"" == "" ) { %>
+					<input type=""class="form-control" id="" name="" value="N/A" readonly> 
+                    <% } %>
+                      <% if (!(profile.strOrganizerBusinessName+"" == "" ))  { %>
+					<input type=""class="form-control" id="" name="" value=<%= profile.strOrganizerBusinessName %> readonly> 
+					 <% } %>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>  
 		</div>
 	</div>
-  </div>
-</div>
+
 </div>

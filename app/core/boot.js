@@ -24,7 +24,7 @@ module.exports = app => {
 
     app.set('views', path.join(path.dirname(__dirname), 'modules'));
 
-    app.use(morgan('dev'));
+    //app.use(morgan('dev'));
 
     app.use(serveStatic(path.join(path.dirname(path.dirname(__dirname)), 'public')));
     

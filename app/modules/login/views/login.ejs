@@ -27,6 +27,9 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800" rel="stylesheet"> 
   
+     <!-- Sweet Alert -->
+   <link href="/assets/bootstrap-sweetalert-master/dist/sweetalert.css" rel="stylesheet"> 
+  
   <!-- Bootstrap CSS File -->
   <link href="/assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   
@@ -69,12 +72,7 @@
         <h2> <span class="rotating"> You create your Events, We provide a platform, To cherish your MOMENTS</span></h2>
         
 		
-		<div class="actions">
-		<br>
-		<br>
-		  <a  class="btn-services" data-toggle="modal" data-target="#confirmationOfBusinessman">UI Tester</a>
-		 
-        </div>
+		
       </div>
     </div>
   </section>
@@ -98,10 +96,24 @@
 				<br>
 				<label for="Password">Password*</label>
                 <input type="password" class="form-control" name="password" id="Password" required>
-				<br>
-              <button type="submit" class="btn btn-services">Log In</button>
-            </form>
-		</div>
+				<div align="right"><input type="checkbox" onclick="AdminShowPassword()">Show Password</div>
+				
+
+<script>
+function AdminShowPassword() {
+    var x = document.getElementById("Password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
+				<hr>
+              <center><button type="submit" class="btn btn-services">Log In</button><center>
+           </div>
+                  </form>
+		
 	</div>
   </div>
 </div>
@@ -114,7 +126,7 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-			<h3 class="modal-title" id="lineModalLabel">Businessman</h3>
+			<h3 class="modal-title" id="lineModalLabel">Provider</h3>
 		</div>
 		<div class="modal-body">
 			<form method="post" action="/login/businessmanLogin">
@@ -123,10 +135,21 @@
                 <input type="email" class="form-control" id="Email" name="email" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" name="password" id="Password" required>
+                <input type="password" class="form-control" name="password" id="provpass" required pattern="[A-Za-z0-9]+" title="Please enter your correct password.">
+				<div align="right"><input type="checkbox" onclick="ProviderShowPassword()">Show Password</div>
 				<br>
-				
-              <button type="submit" class="btn btn-services" >Log In</button>
+				<script>
+function ProviderShowPassword() {
+    var x = document.getElementById("provpass");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
+              <hr>
+              <center><button type="submit" class="btn btn-services">Log In</button><center>
             </form>
 		</div>
 	</div>
@@ -150,9 +173,21 @@
                 <input type="email" class="form-control" name="email" id="Email" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" name="password" id="Password" required>
+                <input type="password" class="form-control" name="password" id="orgpass" required pattern="[A-Za-z0-9]+" title="Please enter your correct password.">
+				<div align="right"><input type="checkbox" onclick="OrganizerShowPassword()">Show Password</div>
 				<br>
-              <button type="submit" class="btn btn-services">Log In</button>
+				<script>
+function OrganizerShowPassword() {
+    var x = document.getElementById("orgpass");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
+				<hr>
+              <center><button type="submit" class="btn btn-services">Log In</button><center>
             </form>
 		</div>
 	</div>
@@ -182,7 +217,7 @@
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Login<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="/login/organizerLogin" data-toggle="modal" data-target="#EventOrganizerLogin">Event Organizer</a></li>
-                    <li><a href="/login/businessmanLogin" data-toggle="modal" data-target="#BusinessmanLogin">Businessman</a></li>
+                    <li><a href="/login/businessmanLogin" data-toggle="modal" data-target="#BusinessmanLogin">Provider</a></li>
                 </ul>
            </li>
 		  <li><a href="#subscribe">Sign Up</a></li>
@@ -283,7 +318,7 @@
         <div class="col-md-8 subscribe-btn-container">
 		 <h4>Sign up as.. <h4>
           <a class="subscribe-btn" data-toggle="modal" data-target="#EventOrganizerSignUp" >Event Organizer</a>
-		  <a class="subscribe-btn" data-toggle="modal" data-target="#BusinessmanSignUp">Businessman</a>
+		  <a class="subscribe-btn" data-toggle="modal" data-target="#BusinessmanSignUp">Provider</a>
         </div>
       </div>
     </div>
@@ -301,44 +336,57 @@
 		<div class="modal-body">
 			
             <!-- content goes here -->
-			<form>
+			<form method="post" action="/login/OrganizerSignup">
               <div class="form-group">
 			  <fieldset style="width: 500px;">
 			  <legend><strong>Personal Information</strong></legend>
                 <label for="FName">First Name*</label>
-                <input type="text" class="form-control" id="FName" placeholder="First Name(eg. Juan)" required>
+                <input type="text" class="form-control" id="FName" name="fname"pattern="[A-Za-z' -]+" title="You can't input special characters such as('/','<','-')" required>
+                <br>
+				<label for="MName">Middle Name</label>
+                <input type="text" class="form-control" id="MName" name="mname" pattern="[A-Za-z' -]+" title="You can't input special characters such as('/','<','-')" >
 				<br>
 				<label for="LName">Last Name*</label>
-                <input type="text" class="form-control" id="LName" placeholder="Last Name(eg. Dela Cruz)" required>
+                <input type="text" class="form-control" id="LName" name="lname" pattern="[A-Za-z' -]+" title="You can't input special characters such as('/','<','-')" required>
 				<br>
 				<label for="Email">Email Address*</label>
-                <input type="email" class="form-control" id="Email" placeholder="Email(eg. juandc@gmail.com)" required>
+                <input type="email" class="form-control" id="Email" name="email" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" id="Password" required>
-		
+                <input type="password" class="form-control" id="OSUPassword" name="password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters  but no special characters" required>
+				<h6>Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters but no special characters</h6>
+                  <div align="right"><input type="checkbox" onclick="OrganizerSUShowPassword()">Show Password</div>
 				</fieldset>
 						<br>
 							  <fieldset style="width: 500px;">
 			  <legend><strong>Contact Information</strong></legend>
             
 				<label for="TelephoneNumber">Telephone Number</label>
-                <input type="number" class="form-control" id="TelephoneNumber"  >
+                <input type="text" class="form-control" id="TelephoneNumber" name="telNo" title="Please enter a valid Telephone number!">
 				<label for="CellphoneNumber">Cellphone Number*</label>
-                <input type="number" class="form-control" id="CellphoneNumber"  required>
+                <input type="number" class="form-control" id="CellphoneNumber" name="cpNo" required>
 					</fieldset>
 					<br>
 			 <fieldset style="width: 500px;">
 			  <legend><strong>Business Information</strong></legend>
 				<label for="BusinessName">Business Name</label>
-                <input type="text" class="form-control" id="BusinessName" placeholder="Business Name(eg. Cherish Event Company)">
+                <input type="text" class="form-control" id="BusinessName" name="businessname" pattern="[A-Za-z' -]+" title="You can't input special characters such as('/','<','-')" placeholder="Business Name(eg. Cherish Event Company)">
 				</fieldset>
 				<br>
               <button type="submit" class="btn btn-default">Submit</button>
 			  <button type="reset" class="btn btn-default">Clear</button>
 		
             </form>
-
+	<script>
+function OrganizerSUShowPassword() {
+    var x = document.getElementById("OSUPassword");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
 		</div>
 		
 	</div>
@@ -353,39 +401,55 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-			<h3 class="modal-title" id="lineModalLabel">BUSINESS SIGN UP FORM</h3>
+			<h3 class="modal-title" id="lineModalLabel">PROVIDER SIGN UP FORM</h3>
 		</div>
 		<div class="modal-body">
+            
+            <!--alert goes here -->
+
 			
             <!-- content goes here -->
-			<form>
+			<form method="post" action="/login/businessmanSignUp">
               <div class="form-group">
 			  <fieldset style="width: 500px;">
 			  <legend><strong>Personal Information</strong></legend>
                 <label for="FName">First Name*</label>
-                <input type="text" class="form-control" id="FName" placeholder="First Name(eg. Juan)" required>
+                <input type="text" class="form-control" id="FName" name="fname" pattern="[A-Za-z' -]+" title="You can't input special characters such as('/','<','-')" required>
+                <br>
+				<label for="MName">Middle Name</label>
+                <input type="text" class="form-control" id="MName" name="mname" pattern="[A-Za-z' -]+" title="You can't input special characters such as('/','<','-')" >
 				<br>
 				<label for="LName">Last Name*</label>
-                <input type="text" class="form-control" id="LName" placeholder="Last Name(eg. Dela Cruz)" required>
+                <input type="text" class="form-control" id="LName" name="lname" pattern="[A-Za-z' -]+" title="You can't input special characters such as('/','<','-')" required>
 				<br>
 				<label for="Email">Email Address*</label>
-                <input type="email" class="form-control" id="Email" placeholder="Email(eg. juandc@gmail.com)" required>
+                <input type="email" class="form-control" id="Email" name="bemail" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" id="Password" required>
-		
+                <input type="password" class="form-control" id="PSUPassword" name="bpassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters but no special characters" required>
+				<h6>Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters but no special characters</h6>
+                  <div align="right"><input type="checkbox" onclick="ProviderSUShowPassword()">Show Password</div>
 				</fieldset>
 						<br>
 				<fieldset style="width: 500px;">
 			  <legend><strong>Contact Information</strong></legend>
             
 				<label for="TelephoneNumber">Telephone Number</label>
-                <input type="number" class="form-control" id="TelephoneNumber"  >
+                <input type="text" class="form-control" id="TelephoneNumber" name="btelno" pattern="[0-9()+-]+" title="Please enter a valid Telephone number!">
 				<label for="CellphoneNumber">Cellphone Number*</label>
-                <input type="number" class="form-control" id="CellphoneNumber"  required>
+                <input type="number" class="form-control" id="CellphoneNumber"  name="bcpno" required>
 					</fieldset>
 					<br>
-			
+				<script>
+function ProviderSUShowPassword() {
+    var x = document.getElementById("PSUPassword");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
 	
 				
               <button type="submit" class="btn btn-default">Submit</button>
@@ -414,7 +478,7 @@
       
       <div class="row">
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/birthday.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/birthday.jpg);" >
             <div class="details">
               <h4>BIRTHDAY</h4>
               <span>is an occasion when a person or institution celebrates the anniversary of their birth. Birthdays are celebrated in numerous cultures, often with a gift, party, or rite of passage.</span>
@@ -423,7 +487,7 @@
         </div>
         
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/Wedding.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/Wedding.jpg);">
             <div class="details">
               <h4>Wedding</h4>
               <span>is a ceremony where two people or a couple are united in marriage. Wedding traditions and customs vary greatly between cultures, ethnic groups, religions, countries, and social classes.</span>
@@ -432,7 +496,7 @@
         </div>
         
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/funeral.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/funeral.jpg);">
             <div class="details">
               <h4>Funeral</h4>
               <span>is a ceremony connected with the burial, cremation, etc. of the body of a dead person, or the burial (or equivalent) with the attendant observances</span>
@@ -441,7 +505,7 @@
         </div>
         
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/Seminar.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/Seminar.jpg);">
             <div class="details">
               <h4>Educational Seminar</h4>
               <span>is a form of academic instruction, either at an academic institution or offered by a commercial or professional organization</span>
@@ -450,7 +514,7 @@
         </div>
         
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/Sports.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/Sports.jpg);" >
             <div class="details">
               <h4>Sports Event</h4>
               <span>includes all forms of competitive physical activity or games which, through casual or organised participation, aim to use, maintain or improve physical ability and skills while providing enjoyment to participants, and in some cases, entertainment for spectators.</span>
@@ -459,7 +523,7 @@
         </div>
         
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/MediaEvent.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/MediaEvent.jpg);">
             <div class="details">
               <h4>Media Event</h4>
               <span> is an event or activity conducted for the purpose of media publicity. It may also include any event that is covered in the mass media or was hosted largely with the media in mind.</span>
@@ -468,7 +532,7 @@
         </div>
         
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/Festival.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/Festival.jpg);" >
             <div class="details">
               <h4>Festival</h4>
               <span>is an event ordinarily celebrated by a community and centering on some characteristic aspect of that community and its religion or traditions.</span>
@@ -477,7 +541,7 @@
         </div>
         
         <div class="col-md-3">
-          <a class="portfolio-item" style="background-image: url(/assets/img/Party.jpg);" href="">
+          <a class="portfolio-item" style="background-image: url(/assets/img/Party.jpg);" >
             <div class="details">
               <h4>Party</h4>
               <span>is a gathering of people who have been invited by a host for the purposes of socializing, conversation, recreation, or as part of a festival or other commemoration of a special occasion.</span>
@@ -510,8 +574,8 @@
             <h4>Joseph Bryan Larin</h4>
             <span>Project Manager/Leader</span>
             <div class="social">
-              <a href=""><i class="fa fa-twitter"></i></a>
-              <a href=""><i class="fa fa-facebook"></i></a>
+              <a ><i class="fa fa-twitter"></i></a>
+              <a ><i class="fa fa-facebook"></i></a>
             </div>
           </div>
         </div>
@@ -522,8 +586,8 @@
             <h4>Gilbert Cortez & Janelle Alag</h4>
             <span>Application Engineer</span>
             <div class="social">
-              <a href=""><i class="fa fa-twitter"></i></a>
-              <a href=""><i class="fa fa-facebook"></i></a>
+              <a ><i class="fa fa-twitter"></i></a>
+              <a ><i class="fa fa-facebook"></i></a>
             </div>
           </div>
         </div>
@@ -534,8 +598,8 @@
             <h4>Alexander Pijan</h4>
             <span>Database Engineer</span>
             <div class="social">
-              <a href=""><i class="fa fa-twitter"></i></a>
-              <a href=""><i class="fa fa-facebook"></i></a>
+              <a ><i class="fa fa-twitter"></i></a>
+              <a ><i class="fa fa-facebook"></i></a>
             </div>
           </div>
         </div>
@@ -546,8 +610,8 @@
             <h4>Mary Justine Espin</h4>
             <span>Technical Documentator</span>
             <div class="social">
-              <a href=""><i class="fa fa-twitter"></i></a>
-              <a href=""><i class="fa fa-facebook"></i></a>
+              <a ><i class="fa fa-twitter"></i></a>
+              <a ><i class="fa fa-facebook"></i></a>
             </div>
           </div>
         </div>
@@ -646,20 +710,32 @@
   
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
     
-  <!-- Required JavaScript Libraries -->
-  <script src="assets/lib/jquery/jquery.min.js"></script>
-  <script src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/lib/superfish/hoverIntent.js"></script>
-  <script src="assets/lib/superfish/superfish.min.js"></script>
-  <script src="assets/lib/morphext/morphext.min.js"></script>
-  <script src="assets/lib/wow/wow.min.js"></script>
-  <script src="assets/lib/stickyjs/sticky.js"></script>
-  <script src="assets/lib/easing/easing.js"></script>
+   <!-- Required JavaScript Libraries -->
+  <script src="/assets/lib/jquery/jquery.min.js"></script>
+  <script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/assets/lib/superfish/hoverIntent.js"></script>
+  <script src="/assets/lib/superfish/superfish.min.js"></script>
+  <script src="/assets/lib/morphext/morphext.min.js"></script>
+  <script src="/assets/lib/wow/wow.min.js"></script>
+  <script src="/assets/lib/stickyjs/sticky.js"></script>
+  <script src="/assets/lib/easing/easing.js"></script>
+
+ <script src="/assets/bootstrap-sweetalert-master/dist/sweetalert.min.js"></script>
   
   <!-- Template Specisifc Custom Javascript File -->
-  <script src="assets/js/custom.js"></script>
+  <script src="/assets/js/custom.js"></script>
   
-  <script src="assets/contactform/contactform.js"></script>
+  <script src="/assets/contactform/contactform.js"></script>
+        
+<% if (alertprovider == 1 ) { %>
+        <script>swal("Error!", "Your email already exists, use another one", "error");</script>
+    <% } %>
+<% if (alertorganizer == 1 ) { %>
+        <script>swal("Error!", "Your email already exists, use another one", "error");</script>
+    <% } %>
+<% if (wrongemail == 1 ) { %>
+        <script>swal("Error!", "You have entered a wrong email/password. Try again!", "error");</script>
+    <% } %>
   
     
 </body>

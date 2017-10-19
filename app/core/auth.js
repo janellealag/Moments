@@ -11,7 +11,7 @@ exports.noAuthed = (req, res, next) => {
                 if(i == 'strOrganizerEmail'){
                     res.redirect('/organizer');
                 }
-                else if (i == 'strBusinessmanEmail'){
+                else if (i == 'strProviderEmail'){
                     res.redirect('/businessman');
                 }
                 else if (i == 'strAdminEmail'){

@@ -18,22 +18,27 @@
 	<div class="container" align=center>
     <div class="row" >
         <div>
+            <%if (content.length==0){ %>
+            <h1>There's no Applicants as of today!</h1>
+            <%}%>
+            <% content.forEach(function(i){ %>
             <fieldset class="well the-fieldset" style="width: 50rem; border-color: black; border-width: 3px; background-color: light gray">
 				<div class="card" style="width: 40rem;">
 					<div class="card-block">
-						<h3 class="card-title" ><strong>Businessman Name</strong></h3>
-						<h5  class="card-text" align=left>Email address:</h5>
-						<h5 class="card-text" align=left>Telephone Number:</h5>
-						<h5 class="card-text" align=left>Cellphone Number:</h5>
+						<h3 class="card-title" ><strong> <%= i.strProviderFName %>&nbsp;<%= i.strProviderLName %></strong></h3>
+						<h5  class="card-text" align=left><strong>Email address: </strong> <%= i.strProviderEmail %></h5>
+						<h5 class="card-text" align=left><strong>Telephone Number: </strong><%= i.strProviderTel %></h5>
+						<h5 class="card-text" align=left><strong>Cellphone Number: </strong><%= i.strProviderCell %></h5>
 						<table align=center>
 							<tr>
-								<td><button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#confirmationOfBusinessman">Evaluate</button></td>
+								<td><button type="submit" class="evaluateButton btn btn-primary" data-toggle="modal" data-target="#confirmationOfBusinessman" data-providerfname="<%= i.strProviderFName %>" data-providermname="<%= i.strProviderMName%>" data-providerlname="<%= i.strProviderLName%>" data-providerEmail="<%=i.strProviderEmail%>" data-providertel="<%=i.strProvidertel%>" data-providercel="<%=i.strProviderCell%>" data-providerid="<%=i.intProviderID%>"  >Evaluate</button></td>
 
 							</tr>
 						</table>
 					</div>
 				</div>
             </fieldset> 
+            <% }); %>
         </div>
     </div>
 	
@@ -58,76 +63,77 @@
               <div class="form-group">
 			  <fieldset style="width: 500px;">
 			  <legend><strong>Personal Information</strong></legend>
+                <label for="FName">Identification Number</label>
+                <input type="text" class="form-control" id="idNumber" name="idnumber" placeholder="" readonly>
+				<br>
                 <label for="FName">First Name</label>
                 <input type="text" class="form-control" id="FName" placeholder="" readonly>
+				<br>
+                <label for="MName">Middle Name</label>
+                <input type="text" class="form-control" id="MName" placeholder="" readonly>
 				<br>
 				<label for="LName">Last Name</label>
                 <input type="text" class="form-control" id="LName" placeholder="" readonly>
 				<br>
 				<label for="Email">Email Address</label>
-                <input type="email" class="form-control" id="Email" placeholder="" readonly>
+                <input type="Email" class="form-control" id="Email" placeholder="" readonly>
 
 		
 				</fieldset>
+				
 						<br>
 				<fieldset style="width: 500px;">
 			  <legend><strong>Contact Information</strong></legend>
             
 				<label for="TelephoneNumber">Telephone Number</label>
-                <input type="number" class="form-control" id="TelephoneNumber" readonly >
+                <input type="number" class="form-control" id="TelNo" readonly >
 				<label for="CellphoneNumber">Cellphone Number*</label>
-                <input type="number" class="form-control" id="CellphoneNumber"  readonly>
+                <input type="number" class="form-control" id="CelNo"  readonly>
 					</fieldset>
+					<br>
+<fieldset style="width: 500px;">
+<legend><strong>Business Location Information</strong></legend>
+	<label for="EventLocation">Event Location(City,Province)</label>
+							
+					
+							
+							  		<script >
+								function activatePlacesSearch(){
+
+								var input = document.getElementById('searchbox');
+								var options = {
+								  types: ['(regions)'],
+								  componentRestrictions: {country: "ph"}
+								 };
+								var autocomplete = new google.maps.places.Autocomplete(input,options);
+								
+				
+								
+							}
+							</script>
+							<input type="text"  class="form-control" name="location" id="searchbox" placeholder="Sta. Mesa, Manila or Marilao, Bulacan" required pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
+							<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCURW8qYuJPFWDgCQLx2iLWBNsWHbZ4FQg&libraries=places&callback=activatePlacesSearch"  ></script>
+							
+</fieldset>
 					<br>
 			 <fieldset style="width: 500px;">
 			  <legend><strong>Business Information</strong></legend>
 				<label for="BusinessName">Business Name*</label>
-                <input type="text" class="form-control" id="BusinessName" placeholder="Business Name(eg. Cherish Event Company)" required>
+                <input type="text" class="form-control" id="BusinessName" name="businessName" placeholder="Business Name(eg. Cherish Event Company)" required  pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
 				<label for="BankName">Bank Name*</label>
-                <input type="text" class="form-control" id="BankName" placeholder="Bank Name(eg. BDO, Landbank)" required>
+                <input type="text" class="form-control" id="BankName" placeholder="Bank Name(eg. BDO, Landbank)" required  pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
 				<label for="BankNumber">Bank Number*</label>
-                <input type="text" class="form-control" id="BankNumber" placeholder="Bank Number" required>
+                <input type="text" class="form-control" id="BankNumber" placeholder="Bank Number" required  pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
 				<label for="BIR">Bureau Of Internal Revenue Number(BIR No.)*</label>
-                <input type="text" class="form-control" id="BIR" placeholder="BIR Number" required>
+                <input type="text" class="form-control" id="BIR" name="bir" placeholder="BIR Number" required  pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
 				<label for="DTI">Department of Trade and Industry Number(DTI No.)*</label>
-                <input type="text" class="form-control" id="DTI" placeholder="DTI Number" required>
-				<script type="text/javascript" src="/assets/city_state.js"></script>
-<br>
-<fieldset style="width: 500px;">
-<legend><strong>Business Location Information</strong></legend>
-<table width=600px>
-<tr>
-<td style="text-align: left;">Country:</td>
-<td style="text-align: left;">Province:</td>
-<td style="text-align: left;">City/Municipality:</td>
+                <input type="text" class="form-control" id="DTI" name="dti" placeholder="DTI Number" required  pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
+				
 
-</tr><tr>
-<td style="text-align: left;">
-<select name="country" id="country" onchange="setStates();">
-
-
-  <option value="Philippines">Philippines</option>
-</select>
-</td>
-
-<td style="text-align: left;">
-<select name="state" id="state" onchange="setCities();">
-  <option value="">Please select a Country</option>
-</select>
-</td>
-<td style="text-align: left;">
-<select name="city"  id="city">
-  <option value="">Please select a Country</option>
-</select>
-</td>
-</tr>
-
-</table>
-</fieldset>
 				</fieldset>
 				<br>
 				
-              <button type="submit" class="btn btn-default">Approve</button>
+              <button type="submit" formmethod="post" formaction="/admin/confirmationOfBusinessman" class="btn btn-default">Approve</button>
 			  <button class="btn btn-default">Reject</button>
 		
             </form>
@@ -140,3 +146,24 @@
 </div>
   
 <%- include('../../../templates/footer.ejs') -%>
+      
+    <script>
+	var pacContainerInitialized = false; 
+                        $('#searchbox').keypress(function() { 
+                                if (!pacContainerInitialized) { 
+                                        $('.pac-container').css('z-index', '9999'); 
+                                        pacContainerInitialized = true; 
+                                } 
+                        }); 
+          $('.evaluateButton').on('click',function(){
+              $('#FName').val($(this).data('providerfname'))
+              $('#MName').val($(this).data('providermname'))
+              $('#LName').val($(this).data('providerlname'))
+              $('#Email').val($(this).data('provideremail'))
+              $('#TelNo').val($(this).data('providertel'))
+              $('#CelNo').val($(this).data('providercel'))
+              $('#idNumber').val($(this).data('providerid'))
+              
+
+          })
+      </script>

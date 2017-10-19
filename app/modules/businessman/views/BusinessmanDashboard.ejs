@@ -16,7 +16,7 @@
         <!-- YOUR CODES HERE -->
 		
 		<div class="row" >
-    <div class="col-6 col-md-2"></div>
+    <div class="col-6 col-md-4"></div>
     <div class="col-6 col-md-4">
         <fieldset class="well the-fieldset" style="border-color: black; border-width: 3px; background-color: light gray">
 
@@ -26,7 +26,7 @@
                 <h4 class="card-title"><strong>Reservation Requests</strong></h4>
                 <br>
                 <div class="my-overflow" style="overflow-y: auto;height: 100px; max-height: 100px; width: 370px">
-                <h4>There are <strong>23</strong> requesting for your Item/Service Reservations.</h4>
+                <h4>There are <strong><%= transact %></strong> Item and Service Requests.</h4>
                 </div>
                 <br>
                 <form>
@@ -37,27 +37,9 @@
 
         </fieldset> 
     </div>
+
     
-    <div class="col-6 col-md-4">
-        <fieldset class="well the-fieldset" style="border-color: black; border-width: 3px; background-color: light gray">
-
-               <div class="card" style="width: 20rem;">
-                <div class="card-block" >
-                
-                <h4 class="card-title"><strong>Recent Transactions</strong></h4>
-                <br>
-                <div class="my-overflow" style="overflow-y: auto;height: 100px; max-height: 100px; width: 370px">
-				<h4>You made <strong>23</strong> Transactions as of Today! Horay!</h4>
-                </div>
-                <br>
-                 <form>
-					<button type="submit" class="btn btn-primary" formmethod="get" formaction="/recentTransactions">See</button>
-				</form>
-                </div>
-                </div>
-
-        </fieldset> 
-    </div>
+    
 	<!-- END OF YOUR CODES -->
       </div>
     </div>  
