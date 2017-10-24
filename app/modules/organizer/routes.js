@@ -350,6 +350,25 @@ db.query(`select intEventNo from tblevent WHERE intOrganizerID=${req.session.use
 });
 
 
+router.post('/ViewItemServiceForCancelled', (req,res)=>{
+    
+var profile= req.session.user;
+	
+db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
+db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.body.eventNo}`,(err,results,fields)=>{console.log(results);if(err)console.log(err);
+db.query(`SELECT  * ,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
+	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
+		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
+	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (0,1,2,3)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
+db.query(`SELECT  * ,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
+	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
+		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
+	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (0,1,2,3)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
+
+res.render('organizer/views/ViewItemServiceForCancelled', {profile:profile,currevent:`${req.body.eventNo}`,eventdetails:eventDetails, service:services,item:items, user: `${req.session.user.strOrganizerFName}`+" "+ `${req.session.user.strOrganizerLName}`});
+});});});});
+});
+
 router.post('/ViewItemServiceForRecent', (req,res)=>{
     
 var profile= req.session.user;
@@ -359,11 +378,11 @@ db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.bo
 db.query(`SELECT  * ,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
-	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
+	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (0,1,2,3)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
 db.query(`SELECT  * ,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
-	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
+	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (0,1,2,3)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
 
 res.render('organizer/views/ViewItemServiceForRecent', {profile:profile,currevent:`${req.body.eventNo}`,eventdetails:eventDetails, service:services,item:items, user: `${req.session.user.strOrganizerFName}`+" "+ `${req.session.user.strOrganizerLName}`});
 });});});});
@@ -411,86 +430,96 @@ router.post('/cancelItemTransaction', (req,res)=>{
     
 var profile= req.session.user;
 	db.query(`UPDATE tblRental SET intRentalStatus=3 WHERE intTransactionNo=${req.body.transactionno} AND intItemNo=${req.body.itemno}` , (err,results, fields) =>{
-    db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
+      
+var profile= req.session.user;
+	
+db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
 db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.body.eventNo}`,(err,results,fields)=>{console.log(results);if(err)console.log(err);
-db.query(`SELECT  *
+db.query(`SELECT  *,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
-	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
-db.query(`SELECT  *
+	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2,3,0)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
+db.query(`SELECT  *,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
-	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
+	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2,3,0)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
 
 res.render('organizer/views/ViewItemService', {profile:profile,currevent:`${req.body.eventNo}`,eventdetails:eventDetails, service:services,item:items, user: `${req.session.user.strOrganizerFName}`+" "+ `${req.session.user.strOrganizerLName}`});
-});});});});
+});});});});});
 
 });
-});
+
 
 router.post('/cancelServiceTransaction', (req,res)=>{
     
 var profile= req.session.user;
 		db.query(`UPDATE tblServices SET intServiceStatus=3 WHERE intTransactionNo=${req.body.transactionno} AND intGenServiceNo=${req.body.genserviceno}` , (err,results, fields) =>{
-    db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
+     
+var profile= req.session.user;
+	
+db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
 db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.body.eventNo}`,(err,results,fields)=>{console.log(results);if(err)console.log(err);
-db.query(`SELECT  *
+db.query(`SELECT  *,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
-	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
-db.query(`SELECT  *
+	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2,3,0)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
+db.query(`SELECT  *,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
-	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
+	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2,3,0)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
 
 res.render('organizer/views/ViewItemService', {profile:profile,currevent:`${req.body.eventNo}`,eventdetails:eventDetails, service:services,item:items, user: `${req.session.user.strOrganizerFName}`+" "+ `${req.session.user.strOrganizerLName}`});
 });});});});
-
 });
 
 });
 
 router.post('/requestCancelledItem', (req,res)=>{
-    
+ 
 var profile= req.session.user;
 	db.query(`UPDATE tblRental SET intRentalStatus=1 WHERE intTransactionNo=${req.body.transactionno} AND intItemNo=${req.body.itemno}` , (err,results, fields) =>{
-    db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
+  
+	
+db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
 db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.body.eventNo}`,(err,results,fields)=>{console.log(results);if(err)console.log(err);
-db.query(`SELECT  *
+db.query(`SELECT  *,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
-	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
-db.query(`SELECT  *
+	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2,3,0)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
+db.query(`SELECT  *,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
-	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
+	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2,3,0)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
 
 res.render('organizer/views/ViewItemService', {profile:profile,currevent:`${req.body.eventNo}`,eventdetails:eventDetails, service:services,item:items, user: `${req.session.user.strOrganizerFName}`+" "+ `${req.session.user.strOrganizerLName}`});
 });});});});
+
 
 });
 });
 
 router.post('/requestCancelledService', (req,res)=>{
-    
-var profile= req.session.user;
+      var profile= req.session.user;
 		db.query(`UPDATE tblServices SET intServiceStatus=1 WHERE intTransactionNo=${req.body.transactionno} AND intGenServiceNo=${req.body.genserviceno}` , (err,results, fields) =>{
-    db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
+            if(err)console.log(err);
+     
+	
+db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
 db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.body.eventNo}`,(err,results,fields)=>{console.log(results);if(err)console.log(err);
 db.query(`SELECT  *,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
-	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
+	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2,3,0)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
 db.query(`SELECT  *,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
 	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
 		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
-	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
+	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2,3,0)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
 
 res.render('organizer/views/ViewItemService', {profile:profile,currevent:`${req.body.eventNo}`,eventdetails:eventDetails, service:services,item:items, user: `${req.session.user.strOrganizerFName}`+" "+ `${req.session.user.strOrganizerLName}`});
 });});});});
 
-});
 
+});
 });
 router.post('/updateDetails', (req,res)=>{
     

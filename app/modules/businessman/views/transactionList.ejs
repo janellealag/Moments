@@ -23,7 +23,7 @@
           <div class="card-block"> 
 		<h4><strong>Organizer:</strong> <%= i.strOrganizerFName %>&nbsp;<%= i.strOrganizerMName%>&nbsp;<%= i.strOrganizerLName %></h4>
 			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong> Event Name: </strong> <%= i.strEventName %> </h5>  
-			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong> Event Time: </strong> <%= i.dateEventStart %> to <%= i.dateEventEnd %> </h5> 
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong> Event Time: </strong> <%= i.Start %> to <%= i.End %> </h5> 
 			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong> Number of Guests:</strong> <%= i.intEstimatedNumberofGuest %></h5> 
               <h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Event Location: </strong> <%= i.strCity %> , <%= i.strProvince %> </h5>
 			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Event Description: </strong><%= i.strEventDescription %> </h5>
@@ -49,7 +49,7 @@
 				<tr>
 					<td><%= j.intItemNo %></td>
 					<td><%= j.strItemName %></td>
-					<td><%= j.dtmRentalDateofUse %></td>
+					<td><%= j.RDOC %></td>
                     <td><% if(j.intRentalStatus == 2){ %>
                         Accepted
                         <% } %>
@@ -66,16 +66,16 @@
 					<td><input value="<%= j.decRentalFinalPrice %>"  readonly></td>
                     <td>
                       
-                      <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-toggle="modal" data-target="#editAmount">
+                      <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-toggle="modal" data-target="#editAmount">
                           <% if(j.intRentalStatus == 1) { %>Approve <%}%>
                          <% if(j.intRentalStatus == 2) { %>Change final price <%}%>
                         </button>
                       
                     <% if(j.intRentalStatus == 1){%> 
-                        <button type="submit" class="ireject btn btn-secondary btn-sm" data-toggle="modal" data-target="#rejectItem" data-rentno="<%=j.intTransactionNo%>">Reject</button>
+                        <button type="submit" class="ireject btn btn-secondary btn-sm" data-toggle="modal" data-target="#rejectItem" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>">Reject</button>
                         <% } %>
                     <% if(j.intRentalStatus == 2){%> 
-                        <button type="submit" class="icancel btn btn-secondary btn-sm" data-toggle="modal" data-target="#cancelItem" data-rentno="<%=j.intTransactionNo%>">Cancel</button>
+                        <button type="submit" class="icancel btn btn-secondary btn-sm" data-toggle="modal" data-target="#cancelItem" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>">Cancel</button>
                         <% } %>
                     
                     
@@ -100,7 +100,7 @@
 				<tr>
 					<th>No.</th>
                     <th>Item Name</th>
-					<th>Date Of Claim</th>
+					<th>Date Of Use</th>
                     <th>Status</th>
 					<th>Total Amount to pay</th>
                     <th>Action</th>
@@ -110,7 +110,7 @@
 				<tr>
 					<td><%= j.intGenServiceNo %></td>
 					<td><%= j.strServiceName %></td>
-					<td><%= j.dtmServiceDateofUse %></td>
+					<td><%= j.SDOU %></td>
                     <td><% if(j.intServiceStatus == 2){ %>
                         Accepted
                         <% } %>
@@ -125,16 +125,16 @@
                         <% } %>
                     </td>
 					<td><input value="<%= j.decServiceFinalPrice %>" readonly></td>
-                    <td><button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount"  data-serviceno="<%=j.intTransactionNo%>"><% if(j.intServiceStatus == 1) { %>Approve <%}%>
+                    <td><button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount"  data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>"><% if(j.intServiceStatus == 1) { %>Approve <%}%>
                          <% if(j.intServiceStatus == 2) { %>Change final price <%}%></button>
                         
                     <% if(j.intServiceStatus == 1) { %>
-                         <button type="submit" class="sreject btn btn-secondary btn-sm" data-toggle="modal" data-target="#rejectService" data-serviceno="<%=j.intTransactionNo%>">
+                         <button type="submit" class="sreject btn btn-secondary btn-sm" data-toggle="modal" data-target="#rejectService" data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>">
                         Reject</button>
                     <% }%>
                    
                     <% if(j.intServiceStatus == 2) { %>
-                         <button type="submit" class="scancel btn btn-secondary btn-sm" data-toggle="modal" data-target="#cancelService" data-serviceno="<%=j.intTransactionNo%>">
+                         <button type="submit" class="scancel btn btn-secondary btn-sm" data-toggle="modal" data-target="#cancelService" data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>">
                         Cancel</button>
                     <% }%>
                     
@@ -269,6 +269,7 @@
             <form>
              <label for="amount">Amount</label>
                 <input type="hidden" class="form-control" id="am" name="rentalno" readonly >
+                <input type="hidden" class="form-control" id="am2" name="rentalno2" readonly >
                 <input type="number" class="form-control" id="amount" name="rentalfinalprice" placeholder="" required>
 				<br> 
             
@@ -297,6 +298,7 @@
             <form>
              <label for="amount">Amount</label>
                 <input type="hidden" class="form-control" id="sam" name="servno" readonly >
+                 <input type="hidden" class="form-control" id="sam2" name="servno2" readonly >
                 <input type="number" class="form-control" id="amount" name="servicefinalprice" placeholder="" required>
 				<br> 
             
@@ -323,6 +325,7 @@
             <form>
              <h4>Reject this service?</h4>
                 <input type="hidden" class="form-control" id="sr" name="sno" readonly >
+                 <input type="hidden" class="form-control" id="sr2" name="sno2" readonly >
               <button type="submit" formmethod="post" formaction="/businessman/rejectService" class="btn btn-primary" >Yes</button>
                 <button type="Submit" class="btn btn-services"  data-dismiss="modal">No</button>
             
@@ -347,6 +350,7 @@
             <form>
              <h4>Cancel this service?</h4>
                 <input type="hidden" class="form-control" id="sc" name="sno" readonly >
+                 <input type="hidden" class="form-control" id="sc2" name="sno2" readonly >
               <button type="submit" formmethod="post" formaction="/businessman/cancelService" class="btn btn-primary" >Yes</button>
                 <button type="Submit" class="btn btn-services"  data-dismiss="modal">No</button>
             
@@ -371,6 +375,7 @@
             <form>
              <h4>Reject this Item?</h4>
                 <input type="hidden" class="form-control" id="ir" name="rno" readonly >
+                <input type="hidden" class="form-control" id="ir2" name="rno2" readonly >
               <button type="submit" formmethod="post" formaction="/businessman/rejectItem" class="btn btn-primary" >Yes</button>
                 <button type="Submit" class="btn btn-services"  data-dismiss="modal">No</button>
             
@@ -395,6 +400,7 @@
             <form>
              <h4>Cancel this Item?</h4>
                 <input type="hidden" class="form-control" id="ic" name="rno" readonly >
+                <input type="hidden" class="form-control" id="ic2" name="rno2" readonly >
               <button type="submit" formmethod="post" formaction="/businessman/cancelItem" class="btn btn-primary" >Yes</button>
                 <button type="Submit" class="btn btn-services"  data-dismiss="modal">No</button>
             
@@ -442,21 +448,27 @@
 <script>
     $('.renteditamount').on('click', function(){
         $('#am').val($(this).data('rentno'))
+        $('#am2').val($(this).data('itemno'))
     })
     $('.serviceeditamount').on('click', function(){
         $('#sam').val($(this).data('serviceno'))
+        $('#sam2').val($(this).data('genserviceno'))
     })
     $('.sreject').on('click', function(){
         $('#sr').val($(this).data('serviceno'))
+        $('#sr2').val($(this).data('genserviceno'))
     })
     $('.scancel').on('click', function(){
         $('#sc').val($(this).data('serviceno'))
+        $('#sc2').val($(this).data('genserviceno'))
     })
     $('.ireject').on('click', function(){
         $('#ir').val($(this).data('rentno'))
+        $('#ir2').val($(this).data('itemno'))
     })
     $('.icancel').on('click', function(){
         $('#ic').val($(this).data('rentno'))
+        $('#ic2').val($(this).data('itemno'))
     })
     
 </script>

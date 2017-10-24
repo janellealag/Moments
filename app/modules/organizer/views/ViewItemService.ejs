@@ -51,8 +51,7 @@ th, td {
   <li><button class="btn btn-info" type="button" id="itembread" onclick="itemOpen()" >Items</button></li>
   <li><button class="btn btn-info" type="button"  id="servicebread" onclick="serviceOpen()"  >Services</button></li>
   
-  <li><input type="hidden" value="<%= currevent %>"  form="requestCancelled" name="eventNo"><button class="btn btn-submit" type="submit" form="requestCancelled">Request for reservation of Cancelled Items/Services</button></li>
-  <li>  
+    
   <input type="hidden" value="<%= currevent %>"  name="eventNo" form="addItemService">
        <button class="btn btn-submit" type="submit" form="addItemService">ADD MORE ITEMS/SERVICE FOR YOUR EVENT<span class="glyphicon glyphicon-search" aria-hidden="true" ></span></button>
   	
@@ -100,8 +99,8 @@ th, td {
 	<td><%= i.strEstimatedPrice%></td>
 	<td><%= parseInt(i.decItemRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
-		<form method="post" action="/organizer/cancelItemTransaction">
-	<td><a class="itemdescription btn btn-primary" href="" data-toggle="modal" data-target="#itemdesc" data-itemdescription="<%= i.strItemDescription %>">Description</a> 
+		
+	<td style="width:25%;"><a class="itemdescription btn btn-primary" href="" data-toggle="modal" data-target="#itemdesc" data-itemdescription="<%= i.strItemDescription %>">Description</a> 
 		<a class="providerButton btn btn-primary" href="" data-toggle="modal" data-target="#providerdetails"
 				data-pd1="<%= i.strProviderBusinessName %>"
 		data-pd2="<%= i.strProviderFName %>"
@@ -112,16 +111,31 @@ th, td {
 		data-pd7="<%= i.strCity  %>"
 		data-pd8="<%= i.strProvince %>"
 		>Provider</a>
+       
+        <% if (i.intRentalStatus ==1) { %>
+         <form method="post" action="/organizer/cancelItemTransaction">
 		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
 		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
 		<input type="hidden" name="itemno" value="<%= i.intItemNo %>">
-        <% if (i.intRentalStatus != 0 || i.intRentalStatus != 3) { %>
 		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to cancel the reservation for this item?');">Cancel</button>
+             </form>	
         <% } %>
+        <% if (i.intRentalStatus == 2) { %>
+        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#steps"  onclick="   alert('This item is being approved and reserved for you by the provider. If you want to cancel this, contact this specific provider.');"><span class="glyphicon glyphicon-info-sign"></span></a>
+        
+        <% } %>
+         <% if (i.intRentalStatus == 3) { %>
+        <form method="post" action="/organizer/requestCancelledItem">
+		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
+		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
+		<input type="hidden" name="itemno" value="<%= i.intItemNo %>">
+		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to request for reservation again for this item?');">Request</button>
+		</form>
+         <% } %>
 		</td>
 				
 		
-	</form>	
+	
     </tr><% }); %>
         <% } %>
     </table>
@@ -159,7 +173,7 @@ th, td {
         <td><font style="color:red;">Rejected</font></td>
     <% } %>
         <% if (i.intServiceStatus == 3) { %>
-        <td><font style="color:red;">Rejected</font></td>
+        <td><font style="color:red;">Cancelled</font></td>
     <% } %>
         <% if (i.intServiceStatus == 2 ) { %>
         <td>Approved</td>
@@ -168,7 +182,7 @@ th, td {
 	<td><%= i.strEstimatedPrice%></td>
 	<td><%= parseInt(i.decServiceRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
-		<form method="post" action="/organizer/cancelServiceTransaction">
+		
 	<td><a class="servicedescription btn btn-primary" href="" data-toggle="modal" data-target="#servicedesc" data-servicedescription="<%= i.strServiceDescription%>" >Description</a> 
 		<a class="providerButton btn btn-primary" href="" data-toggle="modal" data-target="#providerdetails"
 		data-pd1="<%= i.strProviderBusinessName %>"
@@ -180,18 +194,32 @@ th, td {
 		data-pd7="<%= i.strCity  %>"
 		data-pd8="<%= i.strProvince %>"
 		>Provider</a>
+       
+        <% if (i.intServiceStatus == 1){ %>
+         <form method="post" action="/organizer/cancelServiceTransaction">
 		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
 		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
 		<input type="hidden" name="genserviceno" value="<%= i.intGenServiceNo %>">
-        <% if (i.intServiceStatus != 0 || i.intServiceStatus != 3) { %>
 		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to cancel the reservation for this service?');">Cancel</button>
+        </form>
         <% } %>
-		
+		<% if (i.intServiceStatus == 2) { %>
+        <a href="#"  class="btn btn-primary" data-toggle="modal" data-target="#steps"  onclick="   alert('This service is being approved and being processed by the provider. If you want to cancel this, contact this specific provider.');"><span class="glyphicon glyphicon-info-sign"></span></a>
+        
+        <% } %>
+        <% if (i.intServiceStatus == 3) { %>
+        <form method="post" action="/organizer/requestCancelledService">
+		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
+		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
+		<input type="hidden" name="genserviceno" value="<%= i.intGenServiceNo %>">
+		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to request for reservation again for this service?');">Request</button>
+		</form>
+         <% } %>
 		</td>
 				
 				
 		
-		</form>
+		
     </tr><% }); %> <% } %>
     </table>
 	</div>
@@ -315,3 +343,4 @@ document.getElementById('servicesCollapse').style.display = "block";
 			$('#ModalPD6').val($(this).data('pd7')+","+$(this).data('pd8'))
           })	
 		  </script>
+

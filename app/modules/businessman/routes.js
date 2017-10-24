@@ -20,7 +20,7 @@ router.get('/', (req,res) =>{
 
                 db.query(`Select count(*) as C from tblservices join tblgenservice on tblservices.intgenserviceno = tblgenservice.intgenserviceno where tblgenservice.intproviderid = ${req.session.user.intProviderID} AND tblServices.intServiceStatus = ${1}`, (err, resu, fieldsu)=>{
                     service = resu[0].C;
-					console.log(service);
+					
                     db.query(`Select count(*) as I from tblrental join tblitem on tblrental.intitemno = tblitem.intitemno where tblitem.intproviderid = ${req.session.user.intProviderID} AND tblrental.intrentalStatus = ${1}`, (err,resuu, fieldsuu)=>{
                         rental = resuu[0].I;
 
@@ -63,11 +63,11 @@ router.get('/businessmanPending', (req,res)=>{
 var currentTransact = 0;
 
 router.post('/transactionList', (req,res)=>{
-    console.log(req.body.number);
+   
     currentTransact = req.body.number;
     function query1(callback) {
 	setTimeout(function () {
-        db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+        db.query(`select *, DATE_FORMAT(tblevent.dateEventStart , "%M %e, %Y %r") as Start, DATE_FORMAT(tblevent.dateEventEnd , "%M %e, %Y %r") as End from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
 	where inteventno = ${req.body.number}
 
             `, (err,events,fields)=>{
@@ -79,13 +79,13 @@ router.post('/transactionList', (req,res)=>{
 
     function query2(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+            db.query(`select *, DATE_FORMAT(tblrental.dtmRentalDateofUse , "%M %e, %Y %r") as RDOC from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
         where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${req.body.number} && tblrental.intrentalstatus <> ${0};`, (err,itemres,fields)=>{
                 callback(itemres);
-                console.log(itemres);
+               
             });
             
         }, 1000);
@@ -93,7 +93,7 @@ router.post('/transactionList', (req,res)=>{
     
     function query3(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+            db.query(`select *, DATE_FORMAT(tblservices.dtmServiceDateofUse , "%M %e, %Y %r") as SDOU from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
@@ -132,7 +132,7 @@ router.post('/transactionList', (req,res)=>{
     });
     
     function render(dataArray) {
-        console.log('Render array', dataArray);
+       
     }
     
     
@@ -141,7 +141,7 @@ router.post('/transactionList', (req,res)=>{
 
 router.post('/editAmount', (req,res)=>{
     
-    db.query(`Update tblRental set decRentalFinalPrice=${req.body.rentalfinalprice}, intRentalStatus = ${2} where intTransactionNo = ${req.body.rentalno}`, (err,results,fields)=>{
+    db.query(`Update tblRental set decRentalFinalPrice=${req.body.rentalfinalprice}, intRentalStatus = ${2} where intTransactionNo = ${req.body.rentalno} AND intItemNo = ${req.body.rentalno2} `, (err,results,fields)=>{
         if (err) console.log(err);
         
 
@@ -165,7 +165,7 @@ router.post('/editAmount', (req,res)=>{
             join tblitem on tblrental.intitemno = tblitem.intitemno
         where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
                 callback(itemres);
-                console.log(itemres);
+//                console.log(itemres);
             });
             
         }, 1000);
@@ -218,7 +218,7 @@ router.post('/editAmount', (req,res)=>{
 
 
 router.post('/rejectItem', (req,res)=>{
-    db.query(`Update tblRental set decRentalFinalPrice=${0}, intRentalStatus = ${0} where intTransactionNo = ${req.body.rno}`, (err,results,fields)=>{
+    db.query(`Update tblRental set decRentalFinalPrice=${0}, intRentalStatus = ${0} where intTransactionNo = ${req.body.rno} and intItemNo = ${req.body.rno2} `, (err,results,fields)=>{
         if (err) console.log(err);
         
 
@@ -294,7 +294,7 @@ router.post('/rejectItem', (req,res)=>{
 
 router.post('/serviceeditAmount', (req,res)=>{
     
-    db.query(`Update tblservices set decServiceFinalPrice= ${req.body.servicefinalprice} , intServiceStatus = ${2} where intTransactionNo = ${req.body.servno}`, (err,results,fields)=>{
+    db.query(`Update tblservices set decServiceFinalPrice= ${req.body.servicefinalprice} , intServiceStatus = ${2} where intTransactionNo = ${req.body.servno} and intGenServiceNo = ${req.body.servno2} `, (err,results,fields)=>{
         if (err) console.log(err);
         
 
@@ -318,7 +318,7 @@ router.post('/serviceeditAmount', (req,res)=>{
             join tblitem on tblrental.intitemno = tblitem.intitemno
         where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
                 callback(itemres);
-                console.log(itemres);
+//                console.log(itemres);
             });
             
         }, 1000);
@@ -370,7 +370,7 @@ router.post('/serviceeditAmount', (req,res)=>{
 
 router.post('/rejectService', (req,res)=>{
     
-     db.query(`Update tblservices set decServiceFinalPrice=${0}, intServiceStatus = ${0} where intTransactionNo = ${req.body.sno}`, (err,results,fields)=>{
+     db.query(`Update tblservices set decServiceFinalPrice=${0}, intServiceStatus = ${0} where intTransactionNo = ${req.body.sno} and intGenServiceNo = ${req.body.sno2}  `, (err,results,fields)=>{
         if (err) console.log(err);
         
 
@@ -394,7 +394,7 @@ router.post('/rejectService', (req,res)=>{
             join tblitem on tblrental.intitemno = tblitem.intitemno
         where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
                 callback(itemres);
-                console.log(itemres);
+//                console.log(itemres);
             });
             
         }, 1000);
@@ -446,7 +446,7 @@ router.post('/rejectService', (req,res)=>{
 
 router.post('/cancelService', (req,res)=>{
     
-     db.query(`Update tblservices set decServiceFinalPrice=${0}, intServiceStatus = ${3} where intTransactionNo = ${req.body.sno}`, (err,results,fields)=>{
+     db.query(`Update tblservices set decServiceFinalPrice=${0}, intServiceStatus = ${3} where intTransactionNo = ${req.body.sno} and intGenServiceNo = ${req.body.sno2} `, (err,results,fields)=>{
         if (err) console.log(err);
         
 
@@ -470,7 +470,7 @@ router.post('/cancelService', (req,res)=>{
             join tblitem on tblrental.intitemno = tblitem.intitemno
         where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
                 callback(itemres);
-                console.log(itemres);
+//                console.log(itemres);
             });
             
         }, 1000);
@@ -522,7 +522,7 @@ router.post('/cancelService', (req,res)=>{
 
 router.post('/cancelItem', (req,res)=>{
     
-     db.query(`Update tblrental set decRentalFinalPrice=${0}, intRentalStatus = ${3} where intTransactionNo = ${req.body.rno}`, (err,results,fields)=>{
+     db.query(`Update tblrental set decRentalFinalPrice=${0}, intRentalStatus = ${3} where intTransactionNo = ${req.body.rno} and intItemNo = ${req.body.rno2} `, (err,results,fields)=>{
         if (err) console.log(err);
         
 
@@ -546,7 +546,7 @@ router.post('/cancelItem', (req,res)=>{
             join tblitem on tblrental.intitemno = tblitem.intitemno
         where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
                 callback(itemres);
-                console.log(itemres);
+//                console.log(itemres);
             });
             
         }, 1000);
@@ -606,7 +606,7 @@ router.get('/reservations', (req,res) =>{
 			join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
 			join tblrental on tbltransaction.inttransactionno = tblrental.inttransactionno
 			join tblitem on tblrental.intitemno = tblitem.intitemno
-		where tblitem.intproviderid = ${req.session.user.intProviderID})
+		where tblitem.intproviderid = ${req.session.user.intProviderID} AND now()<dateEventEnd)
 		UNION ALL
 		(select tblevent.inteventno, tblorganizer.intorganizerID, strEventName, dateEventStart, dateEventEnd, boolEventStatus, intEstimatedNumberofGuest, 
 		strEventDescription, strCity, strProvince, strOrganizerFName, strOrganizerMName, strOrganizerLName, tbltransaction.inttransactionno
@@ -614,7 +614,7 @@ router.get('/reservations', (req,res) =>{
 			join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
 			join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
 			join tblgenservice on tblservices.intgenserviceno = tblgenservice.intgenserviceno
-		where tblgenservice.intproviderid = ${req.session.user.intProviderID} )) as t
+		where tblgenservice.intproviderid = ${req.session.user.intProviderID} AND now()<dateEventEnd)) as t
 		group by inteventno
 
 		`, (err,results,fields)=>{
@@ -628,19 +628,19 @@ router.get('/reservations', (req,res) =>{
 		where tblitem.intProviderID = ${req.session.user.intProviderID} and tblrental.intRentalStatus = ${1}
 		group by tblevent.intEventNo`, (erre, resultse, fieldse) =>{
 					if (erre) console.log(erre);
-					console.log(resultse);
+					//console.log(resultse);
 					
 					db.query(`Select count(*) as S, tblevent.intEventNo from tblevent join tbltransaction on tblevent.intEventNo = tbltransaction.intEventNo join tblservices on tblservices.intTransactionNo = tblservices.intTransactionNo join tblgenservice on tblgenservice.intGenServiceNo = tblgenservice.intGenServiceNo where tblgenservice.intProviderID = ${req.session.user.intProviderID} and tblservices.intServiceStatus = ${1} group by tblevent.intEventNo`, (errt, resultst, fieldst)=>{
 						if(errt) console.log(errt);
 						
-						console.log(resultst);
+						//console.log(resultst);
 						
-						 pendinggroup = resultse.concat(resultst);
+						// pendinggroup = resultse.concat(resultst);
 						
-						console.log(pendinggroup);
+						//console.log(pendinggroup);
                         var profile = req.session.user;
 						
-						 res.render('businessman/views/reservations', {profile: profile,contents: results, pending: pendinggroup, user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`});
+						 res.render('businessman/views/reservations', {profile: profile,contents: results, user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`});
                 //console.log(results);
                 
             });
@@ -652,9 +652,60 @@ router.get('/reservations', (req,res) =>{
   
 });
 
-router.get('/recentTransactions', (req,res) =>{
-    var profile = req.session.user;
-    res.render('businessman/views/recentTransactions', {profile: profile,user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`});
+router.get('/previousReservation', (req,res) =>{
+  
+    currentTransact = 0;
+    db.query(`Select * from (
+		(select tblevent.inteventno, tblorganizer.intorganizerID, strEventName, dateEventStart, dateEventEnd, boolEventStatus, intEstimatedNumberofGuest, 
+		strEventDescription, strCity, strProvince, strOrganizerFName, strOrganizerMName, strOrganizerLName, tbltransaction.inttransactionno
+		from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+			join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
+			join tblrental on tbltransaction.inttransactionno = tblrental.inttransactionno
+			join tblitem on tblrental.intitemno = tblitem.intitemno
+		where tblitem.intproviderid = ${req.session.user.intProviderID} AND now()>dateEventEnd)
+		UNION ALL
+		(select tblevent.inteventno, tblorganizer.intorganizerID, strEventName, dateEventStart, dateEventEnd, boolEventStatus, intEstimatedNumberofGuest, 
+		strEventDescription, strCity, strProvince, strOrganizerFName, strOrganizerMName, strOrganizerLName, tbltransaction.inttransactionno
+		from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+			join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
+			join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
+			join tblgenservice on tblservices.intgenserviceno = tblgenservice.intgenserviceno
+		where tblgenservice.intproviderid = ${req.session.user.intProviderID} AND now()>dateEventEnd)) as t
+		group by inteventno
+
+		`, (err,results,fields)=>{
+				if (err) console.log(err);
+        
+		var pendinggroup = {};
+        
+        db.query(`Select count(*) as C, tblevent.intEventNo from tblevent join tbltransaction on tblevent.intEventNo = tbltransaction.intEventNo
+		join tblrental on tblrental.intTransactionNo = tbltransaction.intTransactionNo
+		join tblitem on tblitem.intItemNo = tblrental.intItemNo
+		where tblitem.intProviderID = ${req.session.user.intProviderID} and tblrental.intRentalStatus = ${1}
+		group by tblevent.intEventNo`, (erre, resultse, fieldse) =>{
+					if (erre) console.log(erre);
+					//console.log(resultse);
+					
+					db.query(`Select count(*) as S, tblevent.intEventNo from tblevent join tbltransaction on tblevent.intEventNo = tbltransaction.intEventNo join tblservices on tblservices.intTransactionNo = tblservices.intTransactionNo join tblgenservice on tblgenservice.intGenServiceNo = tblgenservice.intGenServiceNo where tblgenservice.intProviderID = ${req.session.user.intProviderID} and tblservices.intServiceStatus = ${1} group by tblevent.intEventNo`, (errt, resultst, fieldst)=>{
+						if(errt) console.log(errt);
+						
+						//console.log(resultst);
+						
+						// pendinggroup = resultse.concat(resultst);
+						
+						//console.log(pendinggroup);
+                        var profile = req.session.user;
+						
+						 res.render('businessman/views/reservations', {profile: profile,contents: results, user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`});
+                //console.log(results);
+                
+            });
+            
+          
+        });   
+
+    });
+
 });
 
 router.get('/itemsOrServices', (req,res) =>{

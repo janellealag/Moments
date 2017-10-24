@@ -15,7 +15,7 @@ th, td {
     padding: 5px;
 }
 </style>
-<script>document.title = "Request For Cancelled Item/Service";</script>
+
     <!--==========================
   Services Section
 ============================-->
@@ -24,12 +24,12 @@ th, td {
 			<div class="row">
 				<div class="col-md-12">
 			
-<h3 class="section-title">CANCELLED ITEMS/SERVICES(<%= eventdetails[0].strEventName %>)</h3>
+<h3 class="section-title"><%= eventdetails[0].strEventName %></h3>
 					<div class="section-title-divider"></div>
 					<div class="progress">
 					 <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0"
-  aria-valuemin="0" aria-valuemax="100" style="width:50%">
-    75% Completed in Organizing your Event
+  aria-valuemin="0" aria-valuemax="100" style="width:100%">
+    100% Completed in Organizing your Event
 	</div>
   </div>
  	
@@ -44,29 +44,22 @@ th, td {
 			</div>
 	<div class="row">
         <!-- YOUR CODES HERE -->
- <form method="post" action="/organizer/ItemService" id="addItemService">  </form>
-  <form method="post" action="/organizer/ViewItemService" id="ViewItemService"></form>
+
 		<div class="container" id="accordion">
   <ul class="breadcrumb">
-  <li><button class="btn btn-info" type="button" id="itembread" onclick="itemOpen()" >Items</button></li>
-  <li><button class="btn btn-info" type="button"  id="servicebread" onclick="serviceOpen()"  >Services</button></li>
+  <li><a href="#" id="itembread" onclick="itemOpen()" >Items</a></li>
+  <li><a href="#" id="servicebread" onclick="serviceOpen()" >Services</a></li>
   
-  <li><input type="hidden" value="<%= currevent %>"  form="ViewItemService" name="eventNo"><button class="btn btn-submit" type="submit" form="ViewItemService">View Items/Service for this upcoming event </button></li>
-  <li>  
-  <input type="hidden" value="<%= currevent %>"  name="eventNo" form="addItemService">
-       <button class="btn btn-submit" type="submit" form="addItemService">ADD MORE ITEMS/SERVICE FOR YOUR EVENT<span class="glyphicon glyphicon-search" aria-hidden="true" ></span></button>
-  	
-	   </li>
-
+<li><a  href="/organizer/cancelledEvents" >View Cancelled Events</a></li>
 	  
 </ul>
-
+  	  
   <div id="itemsCollapse" >
 
    <h3>ITEMS</h3>
     <hr>
       <%if (item.length==0){ %>
-            <h5>There's no cancelled item reservation for this event.</h5>
+            <h5>There's no item reservation for this cancelled event.</h5>
             <%} else {%>
 	<div style="overflow-y: scroll;min-height:400;">
     <table width="95%" >
@@ -85,9 +78,9 @@ th, td {
     <td><%= i.strItemName%></td>
 	<td><%= i.decRentalFinalPrice%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decItemRefundPercentage%></td>
+	<td><%= parseInt(i.decItemRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
-		<form method="post" action="/organizer/requestCancelledItem">
+		
 	<td><a class="itemdescription btn btn-primary" href="" data-toggle="modal" data-target="#itemdesc" data-itemdescription="<%= i.strItemDescription %>">Description</a> 
 		<a class="providerButton btn btn-primary" href="" data-toggle="modal" data-target="#providerdetails"
 				data-pd1="<%= i.strProviderBusinessName %>"
@@ -102,12 +95,12 @@ th, td {
 		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
 		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
 		<input type="hidden" name="itemno" value="<%= i.intItemNo %>">
-		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to request for reservation again for this item?');">Request</button>
+		
 		</td>
 				
 		
 		
-    </tr></form><% }); %> <% } %>
+    </tr><% }); %> <% } %>
     </table>
 	</div>
 	<br>
@@ -118,12 +111,12 @@ th, td {
    <h3>SERVICES</h3>
     <hr>
        <%if (service.length==0){ %>
-            <h5>There's no cancelled service reservation for this event.</h5>
+             <h5>There's no service reservation for this cancelled event.</h5>
             <%} else {%>
 	<div style="overflow-y: scroll;min-height:400;">
     <table width="95%" >
 	<tr style="border: 1px solid #ddd;">
-		<th>Item Name</th>
+		<th>Service Name</th>
 		<th>Final Price</th>
 		<th>Estimated Price</th>
 		<th>Refund Percentage</th>
@@ -137,9 +130,9 @@ th, td {
     <td><%= i.strServiceName%></td>
 	<td><%= i.decRentalFinalPrice%></td>
 	<td><%= i.strEstimatedPrice%></td>
-	<td><%= i.decServiceRefundPercentage%></td>
+	<td><%= parseInt(i.decServiceRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
-		<form method="post" action="/organizer/requestCancelledService">
+		
 	<td><a class="servicedescription btn btn-primary" href="" data-toggle="modal" data-target="#servicedesc" data-servicedescription="<%= i.strServiceDescription%>" >Description</a> 
 		<a class="providerButton btn btn-primary" href="" data-toggle="modal" data-target="#providerdetails"
 		data-pd1="<%= i.strProviderBusinessName %>"
@@ -150,18 +143,18 @@ th, td {
 		data-pd6="<%= i.strProviderEmail %>"
 		data-pd7="<%= i.strCity  %>"
 		data-pd8="<%= i.strProvince %>"
-		>Provider</a><form method="post" action="/organizer/requestCancelledService">
+		>Provider</a>
 		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
 		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
 		<input type="hidden" name="genserviceno" value="<%= i.intGenServiceNo %>">
-		<button class="btn btn-cancel" type="submit" onclick="return confirm('Do you want to request for reservation again for this service?');">Request</button>
-		</form>
+		
+		
 		</td>
 				
 				
 		
 		
-    </tr></form><% }); %><% } %>
+    </tr><% }); %> <% } %>
     </table>
 	</div>
 	<br>

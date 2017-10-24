@@ -98,10 +98,11 @@
 
 							
 							<script>
-
-								var year=new Date().getFullYear();
-								var month=new Date().getMonth() +1;
-								var day=new Date().getDate() + 21;
+                                var d=new Date();
+                                
+								var year=d.getFullYear();
+								var month=d.getMonth() +1;
+								var day=d.getDate() +21 ;
 
 								if(day>31)
 								{day=day-31;

@@ -62,7 +62,7 @@
       <nav id="nav-menu-container">
         <ul class="nav-menu">
           <li class="menu-active"><a href="/businessman/businessmanPending">Home</a></li>
-		<li><a href="/login/logout">Logout</a></li>
+		<li><a href="/login/logout" onclick="return confirm('Do you want to Logout?');">Logout</a></li>
 		<li><a>| &nbsp;&nbsp; Sign in as <%= user %> &nbsp;&nbsp;&nbsp;&nbsp;<span id="date_time"></span></a>
            <script type="text/javascript">window.onload = date_time('date_time');</script>
 		  

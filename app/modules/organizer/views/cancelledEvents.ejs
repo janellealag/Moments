@@ -55,7 +55,7 @@ th, td {
 			<td><%= i.start %>
 			<td><%= i.end%>
 			<td><%= i.strCity %>,<%= i.strProvince %>
-			<form method="post" action="VIewItemServiceForRecent">
+			<form method="post" action="VIewItemServiceForCancelled">
 				
 					
 					
@@ -67,9 +67,9 @@ th, td {
 										data-vd5="<%=i.strEventDescription%>" 
 										data-vd6="<%=i.intEstimatedNumberofGuest%>"
 										data-vd7="<%=i.strCity%>" 
-										data-vd8="<%=i.strProvince%>">View Details</button></td>
+										data-vd8="<%=i.strProvince%>">View Details</button>
+							<button type="submit" class=" btn btn-primary" name="eventNo" value="<%=i.intEventNo%>">Items/Service</button></td>
 							
-							</td>
 						</form>
 			 <tr/>
 			 <% }); %>

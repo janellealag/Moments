@@ -234,23 +234,16 @@ document.getElementById('servicesCollapse').style.display = "block";
 							document.getElementById("asks").style.display="block";
 						}
 						function servicerequest() {
-						var d=new Date("<%= currevent[0].dateEventStart %>");
+						
 					
-						var year=d.getFullYear();
-								var month=d.getMonth() +1;
-								var day=d.getDate();
-								
-								if(day>31)
-								{day=day-31;
-								month=month+1
-								}
-								if(month>12)
-								{
-								month=month-12;
-								year++;
-								}
+			 var d = new Date("<%= currevent[0].dateEventStart %>");
 
-								var fulldate=year+"-";
+ 
+var year=d.getFullYear();
+var month=d.getMonth() +1;
+var day=d.getDate();
+
+var fulldate=year+"-";
 
 								if(month<10)
 								fulldate=fulldate+"0"+month;
@@ -264,7 +257,28 @@ document.getElementById('servicesCollapse').style.display = "block";
 								else
 								fulldate=fulldate+day;
 								
+							
 								document.getElementById("dateUse").value= fulldate;
+                            document.getElementById("dateUse").max= fulldate;
+                           
+                            var md = new Date();
+var minyear=md.getFullYear();
+var minmonth=md.getMonth() +1;
+var minday=md.getDate();
+var mfulldate=minyear+"-";
+
+								if(minmonth<10)
+								mfulldate=mfulldate+"0"+minmonth;
+								else
+								mfulldate=mfulldate+minmonth;
+
+								mfulldate=mfulldate+"-";
+								
+								if(minday<10)
+								mfulldate=mfulldate+"0"+minday;
+								else
+								mfulldate=mfulldate+minday;
+                            document.getElementById("dateUse").min= mfulldate;
 							document.getElementById("SDOU").style.display = "block";
 							document.getElementById("servicereq").style.display="block";
 							document.getElementById("asks").style.display="none";
@@ -325,23 +339,16 @@ document.getElementById('servicesCollapse').style.display = "block";
 							document.getElementById("ask").style.display="block";
 						}
 						function itemrequest() {
-						var d=new Date("<%= currevent[0].dateEventStart %>");
 					
-						var year=d.getFullYear();
-								var month=d.getMonth() +1;
-								var day=d.getDate();
-								
-								if(day>31)
-								{day=day-31;
-								month=month+1
-								}
-								if(month>12)
-								{
-								month=month-12;
-								year++;
-								}
+					
+			 var d = new Date("<%= currevent[0].dateEventStart %>");
+ 
+ 
+var year=d.getFullYear();
+var month=d.getMonth() +1;
+var day=d.getDate();
 
-								var fulldate=year+"-";
+var fulldate=year+"-";
 
 								if(month<10)
 								fulldate=fulldate+"0"+month;
@@ -355,8 +362,26 @@ document.getElementById('servicesCollapse').style.display = "block";
 								else
 								fulldate=fulldate+day;
 								
-								document.getElementById("idateUse").value= fulldate;
-													
+								                        var md = new Date();
+var minyear=md.getFullYear();
+var minmonth=md.getMonth() +1;
+var minday=md.getDate();
+var mfulldate=minyear+"-";
+
+								if(minmonth<10)
+								mfulldate=mfulldate+"0"+minmonth;
+								else
+								mfulldate=mfulldate+minmonth;
+
+								mfulldate=mfulldate+"-";
+								
+								if(minday<10)
+								mfulldate=mfulldate+"0"+minday;
+								else
+								mfulldate=mfulldate+minday;
+                            document.getElementById("idateUse").min= mfulldate;
+							document.getElementById("idateUse").value= fulldate;
+												 document.getElementById("idateUse").max= fulldate;	
 							document.getElementById("IDOU").style.display = "block";
 							document.getElementById("itemreq").style.display="block";
 							document.getElementById("ask").style.display="none";
