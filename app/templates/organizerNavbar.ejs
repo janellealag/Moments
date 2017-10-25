@@ -115,7 +115,12 @@
 					<label>Email</label>
 					<input type="" class="form-control"id="" name="" value=<%= profile.strOrganizerEmail %> readonly> 
 					<label>Telephone Number</label>
-					<input type="" class="form-control"id="" name="" value=<%= profile.strOrganizerTel %> readonly> 
+                    <% if (profile.strOrganizerTel+"" == "" ) { %>
+					<input type="" class="form-control"id="" name="" value="N/A" readonly>
+                    <% } %>
+                    <% if (!(profile.strOrganizerTel+"" == "" )) { %>
+                    <input type="" class="form-control"id="" name="" value="<%= profile.strOrganizerTel %>" readonly>
+                     <% } %>
 					<label>Cellphone Number</label>
 					<input type="" class="form-control"id="" name="" value=<%= profile.strOrganizerCell %> readonly> 
 					<label>Business Name</label>

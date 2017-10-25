@@ -134,10 +134,23 @@
 				<br>
 				
               <button type="submit" formmethod="post" formaction="/admin/confirmationOfBusinessman" class="btn btn-default">Approve</button>
-			  <button class="btn btn-default">Reject</button>
+                  
+			  <button type="submit"class="btn btn-default" onclick="reject()" formmethod="post" formaction="/admin/rejectionOfBusinessman" >Reject</button>
 		
             </form>
-
+                <script>
+                
+                function reject(){
+                    
+                    document.getElementById("searchbox").required=false; document.getElementById("BusinessName").required=false; document.getElementById("BankName").required=false; 
+                    document.getElementById("BankNumber").required=false;
+                    document.getElementById("BIR").required=false;
+                    document.getElementById("DTI").required=false;
+                    
+                    
+                }
+                
+                </script>
 		</div>
 		
 	</div>

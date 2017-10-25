@@ -58,7 +58,7 @@
     <div class="container">
     
       <div id="logo" class="pull-left">
-        <img src="/assets/img/logo.png" alt="" title="" /></img>
+        <img src="/assets/img/logo.png" alt="" title="" />
 
       </div>
         
@@ -71,7 +71,8 @@
                             <li><a href="" data-toggle="modal" data-target="#createNewItem">Add New Item</a></li>
 							<li><a href="" data-toggle="modal" data-target="#createNewService">Add New Service</a></li>
 							<li class="divider"></li>
-                            <li><a href="/businessman/itemsOrServices">View Items/Services</a></li>
+                            <li><a href="/businessman/items">View Items</a></li>
+                            <li><a href="/businessman/services">View Services</a></li>
                         </ul>
                     </li>
 
@@ -110,7 +111,7 @@
 				<label for="ItemName">Item Name</label>
                 <input type="text" class="form-control" id="ItemName" name="itemName" placeholder="" required pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
 				<br>
-				<label for="ItemPrice">Item Estimated Price Price</label>
+				<label for="ItemPrice">Item Estimated Price</label>
                 <input type="text" class="form-control" id="ItemPrice" name="itemPrice" placeholder="500 pesos per hour" min=1 required pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;">
 				<br>
 				<label for="Description">Item Description</label>
@@ -240,10 +241,15 @@
                 <input type="text" class="form-control" id="LName" value=<%= profile.strProviderLName %> readonly>
 				<br>
 				<label for="TelephoneNumber">Telephone Number</label>
-                <input type="number" class="form-control" id="TelephoneNumber" value=`<%= profile.strProviderTel %>` readonly>
+                  <% if (!(profile.strProviderTel+"" == "" )) { %>
+                <input type="text" class="form-control" id="TelephoneNumber" value="<%= profile.strProviderTel %>" readonly>
+                    <% } %>
+                   <% if (profile.strProviderTel+"" == "" ) { %>
+                <input type="text" class="form-control" id="TelephoneNumber" value="N/A" readonly>
+                    <% } %>
 				<br>
 				<label for="CellphoneNumber">Cellphone Number</label>
-                <input type="number" class="form-control" id="CellphoneNumber" value=`<%= profile.strProviderCell %>` readonly>
+                <input type="text" class="form-control" id="CellphoneNumber" value=<%= profile.strProviderCell %> readonly>
 				<br>
 				<label for="BusinessNumber">Business Name</label>
                 <input type="text" class="form-control" id="BusinessNumber" value=<%= profile.strProviderBusinessName  %> readonly>

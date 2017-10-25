@@ -95,7 +95,7 @@
                 <input type="email" class="form-control" id="Email" name="email" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" name="password" id="Password" required>
+                <input type="password" class="form-control" name="password" id="Password" required >
 				<div align="right"><input type="checkbox" onclick="AdminShowPassword()">Show Password</div>
 				
 
@@ -135,7 +135,7 @@ function AdminShowPassword() {
                 <input type="email" class="form-control" id="Email" name="email" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" name="password" id="provpass" required pattern="[A-Za-z0-9]+" title="Please enter your correct password.">
+                <input type="password" class="form-control" name="password" id="provpass" required  title="Please enter your correct password.">
 				<div align="right"><input type="checkbox" onclick="ProviderShowPassword()">Show Password</div>
 				<br>
 				<script>
@@ -173,7 +173,7 @@ function ProviderShowPassword() {
                 <input type="email" class="form-control" name="email" id="Email" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" name="password" id="orgpass" required pattern="[A-Za-z0-9]+" title="Please enter your correct password.">
+                <input type="password" class="form-control" name="password" id="orgpass" required  title="Please enter your correct password.">
 				<div align="right"><input type="checkbox" onclick="OrganizerShowPassword()">Show Password</div>
 				<br>
 				<script>
@@ -353,7 +353,7 @@ function OrganizerShowPassword() {
                 <input type="email" class="form-control" id="Email" name="email" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" id="OSUPassword" name="password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters  but no special characters" required>
+                <input type="password" class="form-control" id="OSUPassword" name="password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}[A-Za-z0-9@._-]+" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters  but no special characters" required>
 				<h6>Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters but no special characters</h6>
                   <div align="right"><input type="checkbox" onclick="OrganizerSUShowPassword()">Show Password</div>
 				</fieldset>
@@ -362,9 +362,9 @@ function OrganizerShowPassword() {
 			  <legend><strong>Contact Information</strong></legend>
             
 				<label for="TelephoneNumber">Telephone Number</label>
-                <input type="text" class="form-control" id="TelephoneNumber" name="telNo" title="Please enter a valid Telephone number!">
+                <input type="text" class="form-control" id="TelephoneNumber" name="telNo"   pattern= "^[\(]\d{1,5}[\)]\d{3}-\d{4}$" title="Valid format (Area Code)XXX-XXXX e.g. (02)713-1234">
 				<label for="CellphoneNumber">Cellphone Number*</label>
-                <input type="number" class="form-control" id="CellphoneNumber" name="cpNo" required>
+                <input type="text" class="form-control" id="CellphoneNumber" name="cpNo" pattern="(/?09)[0-9]{9}" title="Please use a valid Philippine Cellphone Number(ex.09123456789)"required placeholder="e.g.(09123456789)">
 					</fieldset>
 					<br>
 			 <fieldset style="width: 500px;">
@@ -426,7 +426,7 @@ function OrganizerSUShowPassword() {
                 <input type="email" class="form-control" id="Email" name="bemail" placeholder="Email(eg. juandc@gmail.com)" required>
 				<br>
 				<label for="Password">Password*</label>
-                <input type="password" class="form-control" id="PSUPassword" name="bpassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters but no special characters" required>
+                <input type="password" class="form-control" id="PSUPassword" name="bpassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}[A-Za-z0-9@._-]+" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters but no special characters" required>
 				<h6>Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters but no special characters</h6>
                   <div align="right"><input type="checkbox" onclick="ProviderSUShowPassword()">Show Password</div>
 				</fieldset>
@@ -435,9 +435,9 @@ function OrganizerSUShowPassword() {
 			  <legend><strong>Contact Information</strong></legend>
             
 				<label for="TelephoneNumber">Telephone Number</label>
-                <input type="text" class="form-control" id="TelephoneNumber" name="btelno" pattern="[0-9()+-]+" title="Please enter a valid Telephone number!">
+                <input type="text" class="form-control" id="TelephoneNumber" name="btelno"   pattern= "^[\(]\d{1,5}[\)]\d{3}-\d{4}$" title="Valid format (Area Code)XXX-XXXX e.g. (02)713-1234">
 				<label for="CellphoneNumber">Cellphone Number*</label>
-                <input type="number" class="form-control" id="CellphoneNumber"  name="bcpno" required>
+                <input type="text" class="form-control" id="CellphoneNumber"   name="bcpno" pattern="(/?09)[0-9]{9}" title="Please use a valid Philippine Cellphone Number(ex.09123456789)"required placeholder="e.g.(09123456789)">
 					</fieldset>
 					<br>
 				<script>

@@ -24,7 +24,7 @@ th, td {
 			<div class="row">
 				<div class="col-md-12">
 			
-<h3 class="section-title">ITEMS & SERVICES FOR '<%= eventdetails[0].strEventName %>'</h3>
+<h3 class="section-title">SUMMARY OF '<%= eventdetails[0].strEventName %>'</h3>
 					<div class="section-title-divider"></div>
 					<div class="progress">
 					 <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0"
@@ -37,34 +37,42 @@ th, td {
 			</div>
 	<div class="row">
         <!-- YOUR CODES HERE -->
-<center> <form method="post" action="/organizer/ItemService" id="addItemService">  </form>
-  <input type="hidden" value="<%= currevent %>"  name="eventNo" form="addItemService">
-       <button class="btn btn-primary" type="submit" form="addItemService"><span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>ADD MORE ITEMS/SERVICE FOR YOUR EVENT</button>
-  	</center>
-	
+
+  	
+	   
 
 <!--  <div id="itemsCollapse" >-->
   <div class="row">
-   <%if (service.length==0 && item.length==0){ %>
-      <br><br>
-      <center><h2>There's no item/service for this event.</h2></center>
-  <% } %>
-       <%if (item.length==0){ %>
-           
+      <h2>Event Details</h2>
+	<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong> Event Name: </strong> <%= eventdetails[0].strEventName %> </h5>  
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong> Event Time: </strong> <%= eventdetails[0].Start %> to <%=eventdetails[0].End %> </h5> 
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong> Number of Guests:</strong> <%= eventdetails[0].intEstimatedNumberofGuest %></h5> 
+              <h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Event Location: </strong> <%= eventdetails[0].strCity %> , <%= eventdetails[0].strProvince %> </h5>
+			<h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Event Description: </strong><%= eventdetails[0].strEventDescription %> </h5>
+	 <%if (item.length==0 && service.length==0){ %>
+      <br><h2>Items & Services</h2>
+      <h5>There's no Item/Service in this event.</h5>
+           <% } %>	 
+      <%if (item.length==0){ %>
+  
+      
             <%} else {%>
-	<div style="overflow-y: scroll;min-height:400;">
+      <br><h2>Items & Services</h2>
+	
+        <div style="overflow-y: scroll;min-height:400;">
     <table width="95%" >
 	<tr style="border: 1px solid #ddd;">
 		<th>Name</th>
         <th>Type</th>
 		<th>Reservation Status</th>
-		<th>Final Price</th>
+	
 		<th>Estimated Price</th>
 		<th>Refund Percentage</th>
 		<th>Date of Use</th>
 		<th>Actions</th>
 
 	</tr>
+        
     <% item.forEach(function(i){ %>
 	<tr style="border: 1px solid #ddd;">
 	
@@ -82,7 +90,7 @@ th, td {
         <% if (i.intRentalStatus == 3 ) { %>
         <td><font style="color:red;">Cancelled</font></td>
     <% } %>
-	<td><%= i.decRentalFinalPrice%></td>
+	
 	<td><%= i.strEstimatedPrice%></td>
 	<td><%= parseInt(i.decItemRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
@@ -99,26 +107,7 @@ th, td {
 		data-pd8="<%= i.strProvince %>"
 		>Provider</a>
        
-        <% if (i.intRentalStatus ==1) { %>
-         <form method="post" action="/organizer/cancelItemTransaction">
-		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
-		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
-		<input type="hidden" name="itemno" value="<%= i.intItemNo %>">
-		<button class="btn btn-xs btn-cancel" type="submit" onclick="return confirm('Do you want to cancel the reservation for this item?');">Cancel</button>
-             </form>	
-        <% } %>
-        <% if (i.intRentalStatus == 2) { %>
-        <button class="btn btn-xs btn-cancel" data-toggle="modal" data-target="#steps"  onclick="   alert('This item is being approved and reserved for you by the provider. If you want to cancel this, contact this specific provider.');">Cancel<span class="glyphicon glyphicon-info-sign"></span></button>
-        
-        <% } %>
-         <% if (i.intRentalStatus == 3) { %>
-        <form method="post" action="/organizer/requestCancelledItem">
-		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
-		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
-		<input type="hidden" name="itemno" value="<%= i.intItemNo %>">
-		<button class="btn btn-xs btn-cancel" type="submit" onclick="return confirm('Do you want to request for reservation again for this item?');">Request</button>
-		</form>
-         <% } %>
+    
 		</td>
 				
 		
@@ -139,7 +128,7 @@ th, td {
 <!--   <h3>SERVICES</h3>-->
     <hr>
        <%if (service.length==0){ %>
-          
+           
             <%} else {%>
 <!--
 	<div style="overflow-y: scroll;min-height:400;">
@@ -175,7 +164,7 @@ th, td {
         <% if (i.intServiceStatus == 2 ) { %>
         <td>Approved</td>
     <% } %>
-	<td><%= i.decServiceFinalPrice%></td>
+	
 	<td><%= i.strEstimatedPrice%></td>
 	<td><%= parseInt(i.decServiceRefundPercentage*100)%></td>
 	<td><%= i.dateofUse%></td>
@@ -192,26 +181,7 @@ th, td {
 		data-pd8="<%= i.strProvince %>"
 		>Provider</a>
        
-        <% if (i.intServiceStatus == 1){ %>
-         <form method="post" action="/organizer/cancelServiceTransaction">
-		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
-		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
-		<input type="hidden" name="genserviceno" value="<%= i.intGenServiceNo %>">
-		<button class="btn btn-xs btn-cancel" type="submit" onclick="return confirm('Do you want to cancel the reservation for this service?');">Cancel</button>
-        </form>
-        <% } %>
-		<% if (i.intServiceStatus == 2) { %>
-        <button href="#"  class="btn btn-xs btn-cancel" data-toggle="modal" data-target="#steps"  onclick="   alert('This service is being approved and being processed by the provider. If you want to cancel this, contact this specific provider.');">Cancel<span class="glyphicon glyphicon-info-sign"></span></button>
-        
-        <% } %>
-        <% if (i.intServiceStatus == 3) { %>
-        <form method="post" action="/organizer/requestCancelledService">
-		 <input type="hidden" value="<%= currevent %>"  name="eventNo">
-		<input type="hidden" name="transactionno" value="<%= i.intTransactionNo %>">
-		<input type="hidden" name="genserviceno" value="<%= i.intGenServiceNo %>">
-		<button class="btn btn-xs btn-cancel" type="submit" onclick="return confirm('Do you want to request for reservation again for this service?');">Request</button>
-		</form>
-         <% } %>
+      
 		</td>
 				
 				
@@ -298,7 +268,12 @@ th, td {
 			</div>  
 		</div>
 	</div>
-
+            <center>
+            <form method="GET" action="/organizer/upcomingEvents">
+             <button type="submit" class="providerButton btn btn-xl btn-primary">View Upcoming Events</button>
+            </form>
+                </center>
+           
 	<!-- END OF YOUR CODES -->
       </div>
     </div>  

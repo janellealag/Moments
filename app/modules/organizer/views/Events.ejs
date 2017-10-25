@@ -108,8 +108,8 @@ th, td {
 					<h4 class="modal-title">View Event Details</h4>
 				</div>
 				<div class="modal-body">
-					<label>Event ID</label>
-					<input type="text" class="form-control"id="modalVD1" name="" readonly> 
+					
+					<input type="hidden" class="form-control"id="modalVD1" name="" readonly> 
 					<label>Event Name</label>
 					<input type="text" class="form-control" id="modalVD2" name="" readonly> 
 					<label>Start Date & Time</label>
@@ -120,7 +120,7 @@ th, td {
 					<textarea rows="2" class="form-control"id="modalVD5" name="" readonly> </textarea>
 					<label>Estimated Number Of Guest</label>
 					<input type="number" class="form-control"id="modalVD6" name="" readonly> 
-					<label>Location</label>
+					<label>Event Location</label>
 					<input type="text"class="form-control" id="modalVD7" name="" readonly> 
 				</div>
 				<div class="modal-footer">
@@ -143,8 +143,8 @@ th, td {
 				</div>
 				<div class="modal-body">
 				<form method="POST" action="/organizer/updateDetails" onsubmit="return confirm('Do you really want to modify these event details?');">
-					<label>Event ID</label>
-					<input type="text" class="form-control"id="modalED1" name="eventID" readonly> 
+					
+					<input type="hidden" class="form-control"id="modalED1" name="eventID" readonly> 
 					<label>Event Name</label>
 					<input type="text" class="form-control" id="modalED2" name="eventname" required pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;"> 
 					<label>Start Date & Time</label>
@@ -155,11 +155,11 @@ th, td {
 					<textarea rows="2" class="form-control"id="modalED5" name="eventdescription" required pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;"> </textarea>
 					<label>Estimated Number Of Guest</label>
 					<input type="number" class="form-control"id="modalED6" name="estimatednumberofguest" required pattern="[^><\][\\\x22;]+" title="Please do not use prohibited special characters such as <,>,\,;"> 
-					<label>Location</label>
+					<label>Event Location</label>
 					<input type="text"class="form-control" id="modalED7" readonly> 
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-default" >Edit</button>
+					<button type="submit" class="btn btn-default" >Save</button>
 					</form>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>

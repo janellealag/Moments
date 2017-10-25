@@ -1,3 +1,5 @@
+
+
 CREATE TABLE tblOrganizer(
 intOrganizerID INT PRIMARY KEY AUTO_INCREMENT,
 strOrganizerFName VARCHAR(50) NOT NULL ,
@@ -39,7 +41,8 @@ intTransactionNo int  not null ,
 intGenServiceNo int not null,
 dtmServiceDateofUse timestamp default 0,
 decServiceFinalPrice decimal(9,2) ,
-intServiceStatus int(1) default 1 not null,					
+intServiceStatus int(1) default 1 not null,
+dtmServiceDate timestamp not null default current_timestamp,			
 primary key(intTransactionNo,intGenServiceNo)
 );
 
@@ -48,7 +51,7 @@ intTransactionNo int not null,
 intItemNo int not null,
 dtmRentalDateofUse timestamp default 0,
 decRentalFinalPrice decimal(9,2) ,
-intRentalStatus int(1) not null default 1,					
+intRentalStatus int(1) not null default 1,			dtmRentalDate timestamp not null default current_timestamp,	
 primary key(intTransactionNo,intItemNo)
 );
 

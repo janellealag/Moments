@@ -56,8 +56,27 @@ router.post('/', (req,res) =>{
 });
 
 router.get('/businessmanPending', (req,res)=>{
-    var profile = req.session.user;
-	res.render('businessman/views/businessmanPending', {profile: profile,user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`} );
+
+    db.query(`Select * from tblProvider where strProviderEmail = "${req.session.user.strProviderEmail}" and strProviderPassword = "${req.session.user.strProviderPassword}"`,(err,results,fields)=>{
+        req.session.user = results[0];
+        console.log(results[0]);
+
+
+           var profile = req.session.user;
+    res.render('businessman/views/businessmanPending', {profile: profile,user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`} );
+    });
+
+
+ 
+});
+
+router.post('/businessmanRequest', (req,res)=>{
+  db.query(`UPDATE tblprovider set intproviderstatus = ${0} where intProviderID = ${req.session.user.intProviderID}`,(err,results,fields)=>{
+    if (err) console.log(err);
+
+    res.redirect('/businessman/businessmanPending');
+
+  });
 });
 
 var currentTransact = 0;
@@ -83,7 +102,7 @@ router.post('/transactionList', (req,res)=>{
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
-        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${req.body.number} && tblrental.intrentalstatus <> ${0};`, (err,itemres,fields)=>{
+        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${req.body.number} `, (err,itemres,fields)=>{
                 callback(itemres);
                
             });
@@ -97,7 +116,7 @@ router.post('/transactionList', (req,res)=>{
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
-    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${req.body.number} && tblservices.intServiceStatus <> ${0};`, (err,serviceres,fields)=>{
+    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${req.body.number}`, (err,serviceres,fields)=>{
                 callback(serviceres);
             });
             
@@ -145,9 +164,9 @@ router.post('/editAmount', (req,res)=>{
         if (err) console.log(err);
         
 
-        function query1(callback) {
+       function query1(callback) {
 	setTimeout(function () {
-        db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+        db.query(`select *, DATE_FORMAT(tblevent.dateEventStart , "%M %e, %Y %r") as Start, DATE_FORMAT(tblevent.dateEventEnd , "%M %e, %Y %r") as End from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
 	where inteventno = ${currentTransact}
 
             `, (err,events,fields)=>{
@@ -159,13 +178,13 @@ router.post('/editAmount', (req,res)=>{
 
     function query2(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+            db.query(`select *, DATE_FORMAT(tblrental.dtmRentalDateofUse , "%M %e, %Y %r") as RDOC from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
-        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
+        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact} `, (err,itemres,fields)=>{
                 callback(itemres);
-//                console.log(itemres);
+               
             });
             
         }, 1000);
@@ -173,17 +192,19 @@ router.post('/editAmount', (req,res)=>{
     
     function query3(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+            db.query(`select *, DATE_FORMAT(tblservices.dtmServiceDateofUse , "%M %e, %Y %r") as SDOU from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
-    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,serviceres,fields)=>{
+    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,serviceres,fields)=>{
                 callback(serviceres);
             });
             
         }, 1000);
     }
 
+    
+    
     
     async.parallel({
 	data1: function (cb) {
@@ -222,9 +243,9 @@ router.post('/rejectItem', (req,res)=>{
         if (err) console.log(err);
         
 
-        function query1(callback) {
+function query1(callback) {
 	setTimeout(function () {
-        db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+        db.query(`select *, DATE_FORMAT(tblevent.dateEventStart , "%M %e, %Y %r") as Start, DATE_FORMAT(tblevent.dateEventEnd , "%M %e, %Y %r") as End from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
 	where inteventno = ${currentTransact}
 
             `, (err,events,fields)=>{
@@ -236,13 +257,13 @@ router.post('/rejectItem', (req,res)=>{
 
     function query2(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+            db.query(`select *, DATE_FORMAT(tblrental.dtmRentalDateofUse , "%M %e, %Y %r") as RDOC from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
-        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
+        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,itemres,fields)=>{
                 callback(itemres);
-                //console.log(itemres);
+               
             });
             
         }, 1000);
@@ -250,17 +271,19 @@ router.post('/rejectItem', (req,res)=>{
     
     function query3(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+            db.query(`select *, DATE_FORMAT(tblservices.dtmServiceDateofUse , "%M %e, %Y %r") as SDOU from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
-    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,serviceres,fields)=>{
+    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,serviceres,fields)=>{
                 callback(serviceres);
             });
             
         }, 1000);
     }
 
+    
+    
     
     async.parallel({
 	data1: function (cb) {
@@ -298,9 +321,9 @@ router.post('/serviceeditAmount', (req,res)=>{
         if (err) console.log(err);
         
 
-        function query1(callback) {
+       function query1(callback) {
 	setTimeout(function () {
-        db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+        db.query(`select *, DATE_FORMAT(tblevent.dateEventStart , "%M %e, %Y %r") as Start, DATE_FORMAT(tblevent.dateEventEnd , "%M %e, %Y %r") as End from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
 	where inteventno = ${currentTransact}
 
             `, (err,events,fields)=>{
@@ -312,13 +335,13 @@ router.post('/serviceeditAmount', (req,res)=>{
 
     function query2(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+            db.query(`select *, DATE_FORMAT(tblrental.dtmRentalDateofUse , "%M %e, %Y %r") as RDOC from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
-        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
+        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,itemres,fields)=>{
                 callback(itemres);
-//                console.log(itemres);
+               
             });
             
         }, 1000);
@@ -326,17 +349,19 @@ router.post('/serviceeditAmount', (req,res)=>{
     
     function query3(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+            db.query(`select *, DATE_FORMAT(tblservices.dtmServiceDateofUse , "%M %e, %Y %r") as SDOU from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
-    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,serviceres,fields)=>{
+    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,serviceres,fields)=>{
                 callback(serviceres);
             });
             
         }, 1000);
     }
 
+    
+    
     
     async.parallel({
 	data1: function (cb) {
@@ -374,9 +399,9 @@ router.post('/rejectService', (req,res)=>{
         if (err) console.log(err);
         
 
-        function query1(callback) {
+function query1(callback) {
 	setTimeout(function () {
-        db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+        db.query(`select *, DATE_FORMAT(tblevent.dateEventStart , "%M %e, %Y %r") as Start, DATE_FORMAT(tblevent.dateEventEnd , "%M %e, %Y %r") as End from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
 	where inteventno = ${currentTransact}
 
             `, (err,events,fields)=>{
@@ -388,13 +413,13 @@ router.post('/rejectService', (req,res)=>{
 
     function query2(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+            db.query(`select *, DATE_FORMAT(tblrental.dtmRentalDateofUse , "%M %e, %Y %r") as RDOC from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
-        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
+        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact} `, (err,itemres,fields)=>{
                 callback(itemres);
-//                console.log(itemres);
+               
             });
             
         }, 1000);
@@ -402,17 +427,19 @@ router.post('/rejectService', (req,res)=>{
     
     function query3(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+            db.query(`select *, DATE_FORMAT(tblservices.dtmServiceDateofUse , "%M %e, %Y %r") as SDOU from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
-    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,serviceres,fields)=>{
+    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact} `, (err,serviceres,fields)=>{
                 callback(serviceres);
             });
             
         }, 1000);
     }
 
+    
+    
     
     async.parallel({
 	data1: function (cb) {
@@ -450,9 +477,9 @@ router.post('/cancelService', (req,res)=>{
         if (err) console.log(err);
         
 
-        function query1(callback) {
+function query1(callback) {
 	setTimeout(function () {
-        db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+        db.query(`select *, DATE_FORMAT(tblevent.dateEventStart , "%M %e, %Y %r") as Start, DATE_FORMAT(tblevent.dateEventEnd , "%M %e, %Y %r") as End from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
 	where inteventno = ${currentTransact}
 
             `, (err,events,fields)=>{
@@ -464,13 +491,13 @@ router.post('/cancelService', (req,res)=>{
 
     function query2(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+            db.query(`select *, DATE_FORMAT(tblrental.dtmRentalDateofUse , "%M %e, %Y %r") as RDOC from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
-        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
+        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,itemres,fields)=>{
                 callback(itemres);
-//                console.log(itemres);
+               
             });
             
         }, 1000);
@@ -478,17 +505,19 @@ router.post('/cancelService', (req,res)=>{
     
     function query3(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+            db.query(`select *, DATE_FORMAT(tblservices.dtmServiceDateofUse , "%M %e, %Y %r") as SDOU from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
-    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,serviceres,fields)=>{
+    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact} `, (err,serviceres,fields)=>{
                 callback(serviceres);
             });
             
         }, 1000);
     }
 
+    
+    
     
     async.parallel({
 	data1: function (cb) {
@@ -516,7 +545,6 @@ router.post('/cancelService', (req,res)=>{
         
         
         
-        
     });
 });
 
@@ -526,9 +554,9 @@ router.post('/cancelItem', (req,res)=>{
         if (err) console.log(err);
         
 
-        function query1(callback) {
+function query1(callback) {
 	setTimeout(function () {
-        db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+        db.query(`select *, DATE_FORMAT(tblevent.dateEventStart , "%M %e, %Y %r") as Start, DATE_FORMAT(tblevent.dateEventEnd , "%M %e, %Y %r") as End from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
 	where inteventno = ${currentTransact}
 
             `, (err,events,fields)=>{
@@ -540,13 +568,13 @@ router.post('/cancelItem', (req,res)=>{
 
     function query2(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
+            db.query(`select *, DATE_FORMAT(tblrental.dtmRentalDateofUse , "%M %e, %Y %r") as RDOC from tblevent join tblorganizer on tblevent.intorganizerID = tblorganizer.intorganizerID
             join tbltransaction on tblevent.inteventno = tbltransaction.inteventno
             join tblrental on tblrental.inttransactionno = tbltransaction.inttransactionno
             join tblitem on tblrental.intitemno = tblitem.intitemno
-        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,itemres,fields)=>{
+        where tblitem.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,itemres,fields)=>{
                 callback(itemres);
-//                console.log(itemres);
+               
             });
             
         }, 1000);
@@ -554,17 +582,19 @@ router.post('/cancelItem', (req,res)=>{
     
     function query3(callback) {
         setTimeout(function () {
-            db.query(`select * from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
+            db.query(`select *, DATE_FORMAT(tblservices.dtmServiceDateofUse , "%M %e, %Y %r") as SDOU from tblevent join tblorganizer on tblevent.intorganizerid = tblorganizer.intorganizerid
         join tbltransaction on tbltransaction.inteventno = tblevent.inteventno
         join tblservices on tbltransaction.inttransactionno = tblservices.inttransactionno
         join tblgenservice on tblgenservice.intgenserviceno = tblservices.intgenserviceno
-    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact};`, (err,serviceres,fields)=>{
+    where tblgenservice.intproviderid = ${req.session.user.intProviderID} && tblevent.inteventno = ${currentTransact}`, (err,serviceres,fields)=>{
                 callback(serviceres);
             });
             
         }, 1000);
     }
 
+    
+    
     
     async.parallel({
 	data1: function (cb) {
@@ -705,6 +735,27 @@ router.get('/previousReservation', (req,res) =>{
         });   
 
     });
+
+});
+
+router.get('/items', (req,res)=>{
+
+    db.query(`SELECT * from \`tblItem\` where  \`intProviderID\` = ${req.session.user.intProviderID} `, (err,results,fields)=>{
+        
+       
+            var profile = req.session.user;
+            res.render('businessman/views/items', {profile: profile,success: 0,itemalert: 0, servicealert: 0, re: results,  user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`});
+    
+    });
+
+});
+
+router.get('/services', (req,res)=>{
+
+        db.query(`SELECT * from \`tblgenservice\` where  \`intProviderID\` = ${req.session.user.intProviderID} `, (err,resultss,fields) =>{
+            var profile = req.session.user;
+            res.render('businessman/views/services', {profile: profile,success: 0,itemalert: 0, servicealert: 0,  se: resultss, user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`});
+        });
 
 });
 

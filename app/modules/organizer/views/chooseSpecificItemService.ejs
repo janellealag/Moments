@@ -66,7 +66,7 @@ th, td {
     </div><!-- /input-group -->
   </div>
         </form>
-		  	<h3><strong>STEP 2&3</strong>: Search Item & Service for your Event and Choose SPECIFIC ITEMS & SERVICES </h3>
+		  	<h3><strong>STEP 2</strong>: Search Item & Service for your Event and Choose SPECIFIC ITEMS & SERVICES </h3>
 		<hr>
 
   
@@ -75,23 +75,21 @@ th, td {
 	<div class="row">
         <!-- YOUR CODES HERE -->
 
-		<div class="container" id="accordion">
-  <ul class="breadcrumb">
-  <li><a href="#" id="itembread" onclick="itemOpen()" >Items</a></li>
-  <li><a href="#" id="servicebread" onclick="serviceOpen()" >Services</a></li>
-</ul>
   
-  <div id="itemsCollapse">
-
-   <h3>ITEMS</h3>
-    <hr>
+<!--  <div id="itemsCollapse">-->
+<div class="row">
+    <%if (reServices.length==0 && reItems.length==0){ %>
+    
+    <center><h2> There's no searched Item/Service!</h2></center>
+    <% } %>
       <%if (reItems.length==0){ %>
-          <h6>There's no searched Item.</h6></div>
+          </div>
             <%} else {%>
 	<div style="overflow-y: scroll;min-height:400;">
     <table width="95%" id="itemTable">
 	<tr style="border: 1px solid #ddd;">
-		<th>Item Name</th>
+		<th>Name</th>
+        <th>Type</th>
 		<th>Estimated Price</th>
 		<th>Refund Percentage</th>
 		<th>Provider Name</th>
@@ -102,6 +100,7 @@ th, td {
 	<tr style="border: 1px solid #ddd;">
 	
     <td><%= i.strItemName%></td>
+    <td>Item</td>
 	<td><%= i.strEstimatedPrice%></td>
 	<td><%= parseInt(i.decItemRefundPercentage*100)%></td>
 	<td><%= i.strProviderFName%> <%= i.strProviderLName%></td>
@@ -121,33 +120,27 @@ th, td {
 		
 		
     </tr><% }); %><% } %>
+<!--
     </table>
 	</div>
 	<br>
 
   </div>
-   <div id="servicesCollapse" style="display:none;">
-   
+-->
+<!--   <div id="servicesCollapse" style="display:none;">-->
+  <div class="row"> 
  
-    <h3>SERVICE</h3>
-    <hr>
+    
        <%if (reServices.length==0){ %>
-          <h6>There's no service searched.</h6></div>
+       </div>
             <%} else {%>
-	<div style="overflow-y: scroll;min-height:400;">
-    <table width="95%" id="serviceTable">
-	<tr style="border: 1px solid #ddd;">
-		<th>Service Name</th>
-		<th>Estimated Price</th>
-		<th>Refund Percentage</th>
-		<th>Provider Name</th>
-		<th>Actions</th>
-
-	</tr>
+	
+ 
     <% reServices.forEach(function(i,ctr){ %>
 	<tr style="border: 1px solid #ddd;">
 	
     <td><%= i.strServiceName%></td>
+    <td>Service</td>
 	<td><%= i.strEstimatedPrice%></td>
 	<td><%= parseInt(i.decServiceRefundPercentage*100)%></td>
 	<td><%= i.strProviderFName%> <%= i.strProviderLName%></td>
@@ -221,7 +214,7 @@ document.getElementById('servicesCollapse').style.display = "block";
 					<input type="hidden" value=<%= currevent[0].intEventNo %>  name="currentEvent">
 
 				
-							<center><button type="submit" class="btn btn-submit"  id="servicereq" name="servicereq" >Proceed</button></form></center>
+							<center><button type="submit" class="btn btn-submit"  id="servicereq" name="servicereq" >Proceed</button></center></form>
 							<center><button type="button" class="btn btn-submit"  id="asks" onclick="servicerequest()">Ask for Reservation</button></form></center>
 							
 						
@@ -394,9 +387,10 @@ var mfulldate=minyear+"-";
 
 
 <div align="center">
-								<form method="get" action="/organizer/upcomingEvents">
-								<button type="submit" class="btn btn-services"  >Proceed(<strong>Step 4</strong>:Finalize your Event Details.)</button>
-				</form>
+								
+    <form method="POST" action="/organizer/summaryOfItemService">
+					<button type="submit" class=" btn btn-primary" value="<%= currevent[0].intEventNo %>"  name="eventNo">Proceed(Summarization of your Event Details.)</button>  	
+						</form>
 							</div>
 
 

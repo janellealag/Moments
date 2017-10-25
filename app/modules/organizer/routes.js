@@ -35,6 +35,26 @@ router.get('/itemServiceList', (req,res) =>{
 	res.redirect('/organizer/createEvent');
 });
 
+router.post('/summaryOfItemService', (req,res) =>{
+    
+var profile= req.session.user;
+	
+db.query(`SELECT * FROM tblEvent WHERE  intEventNo= ${req.body.eventNo}`,(err,eventDetails,fields)=>{  console.log(eventDetails);if(err)console.log(err);
+db.query(`SELECT intTransactionNo FROM tblTransaction WHERE intEventNo= ${req.body.eventNo}`,(err,results,fields)=>{console.log(results);if(err)console.log(err);
+db.query(`SELECT  *,DATE_FORMAT(tblServices.dtmServiceDateofUse, "%M %e, %Y %r") AS dateofUse
+	 FROM  tblServices JOIN tblGenService ON  tblGenService.intGenServiceNo=tblServices.intGenServiceNo
+		                     JOIN tblProvider ON tblProvider.intProviderID =tblGenService.intProviderID
+	WHERE   tblServices.intTransactionNo=${results[0].intTransactionNo} AND  tblServices.intServiceStatus in (1,2,3,0)`,(err,services,fields)=>{console.log(services);if(err)console.log(err);
+db.query(`SELECT  *,DATE_FORMAT(tblRental.dtmRentalDateofUse, "%M %e, %Y %r") AS dateofUse
+	 FROM  tblRental JOIN tblItem ON  tblItem.intItemNo=tblRental.intItemNo
+		                     JOIN tblProvider ON tblProvider.intProviderID =tblItem.intProviderID
+	WHERE   tblRental.intTransactionNo=${results[0].intTransactionNo} AND intRentalStatus in (1,2,3,0)`,(err,items,fields)=>{console.log(items);if(err)console.log(err);
+
+res.render('organizer/views/summaryItemService', {profile:profile,currevent:`${req.body.eventNo}`,eventdetails:eventDetails, service:services,item:items, user: `${req.session.user.strOrganizerFName}`+" "+ `${req.session.user.strOrganizerLName}`});
+});});});});
+	
+});
+
 
 router.post('/itemServiceList', (req,res) =>{
 

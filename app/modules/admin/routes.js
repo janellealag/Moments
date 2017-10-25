@@ -52,6 +52,14 @@ router.post('/confirmationOfBusinessman', (req,res)=>{
     });
 });
 
+router.post('/rejectionOfBusinessman', (req,res)=>{
+	
+    db.query(`UPDATE \`tblProvider\` SET  \`intProviderStatus\` = ${2} where \`intProviderID\` = ${req.body.idnumber} `, (err,results,fields)=>{
+       if (err) console.log(err);
+       res.redirect('/admin');
+    });
+});
+
 router.get('/confirmationOfRequest', (req,res)=>{
     
             res.render('admin/views/confirmationOfRequest', {user: `${req.session.user.strAdminFName}`+" "+`${req.session.user.strAdminLName}`});

@@ -51,7 +51,7 @@
 					<td><%= j.strItemName %></td>
 					<td><%= j.RDOC %></td>
                     <td><% if(j.intRentalStatus == 2){ %>
-                        Accepted
+                        <font style="color:green;"> Accepted </font>
                         <% } %>
                         <% if(j.intRentalStatus == 1){ %>
                         Pending
@@ -63,13 +63,17 @@
                         <font style="color:red;">Cancelled</font>
                         <% } %>
                     </td>
-					<td><input value="<%= j.decRentalFinalPrice %>"  readonly></td>
+					<td><label>&nbsp;₱&nbsp; <%= j.decRentalFinalPrice %></label></td>
                     <td>
                       
-                      <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-toggle="modal" data-target="#editAmount">
-                          <% if(j.intRentalStatus == 1) { %>Approve <%}%>
-                         <% if(j.intRentalStatus == 2) { %>Change final price <%}%>
-                        </button>
+                     
+                          <% if(j.intRentalStatus == 1) { %> 
+                        <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-iprice="<%= j.strEstimatedPrice %>" data-toggle="modal" data-target="#editAmount">Approve </button>
+                        <%}%>
+                         <% if(j.intRentalStatus == 2) { %> 
+                        <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-iprice="<%= j.strEstimatedPrice %>" data-toggle="modal" data-target="#editAmount">Change final price </button>
+                        <%}%>
+                        
                       
                     <% if(j.intRentalStatus == 1){%> 
                         <button type="submit" class="ireject btn btn-secondary btn-sm" data-toggle="modal" data-target="#rejectItem" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>">Reject</button>
@@ -112,7 +116,7 @@
 					<td><%= j.strServiceName %></td>
 					<td><%= j.SDOU %></td>
                     <td><% if(j.intServiceStatus == 2){ %>
-                        Accepted
+                        <font style="color:green;"> Accepted </font>
                         <% } %>
                         <% if(j.intServiceStatus == 1){ %>
                         Pending
@@ -124,9 +128,14 @@
                         <font style="color:red;">Cancelled</font>
                         <% } %>
                     </td>
-					<td><input value="<%= j.decServiceFinalPrice %>" readonly></td>
-                    <td><button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount"  data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>"><% if(j.intServiceStatus == 1) { %>Approve <%}%>
-                         <% if(j.intServiceStatus == 2) { %>Change final price <%}%></button>
+					<td><label>&nbsp;₱&nbsp; <%= j.decServiceFinalPrice %></label></td>
+                    <td>
+                        <% if(j.intServiceStatus == 1) { %> 
+                        <button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount" data-sprice="<%= j.strEstimatedPrice %>"  data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>">Approve </button> 
+                        <%}%>
+                        <% if(j.intServiceStatus == 2) { %>
+                        <button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount" data-sprice="<%= j.strEstimatedPrice %>"  data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>">Change final price </button>
+                        <%}%>
                         
                     <% if(j.intServiceStatus == 1) { %>
                          <button type="submit" class="sreject btn btn-secondary btn-sm" data-toggle="modal" data-target="#rejectService" data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>">
@@ -267,9 +276,12 @@
 		</div>
 		<div class="modal-body">
             <form>
-             <label for="amount">Amount</label>
+             
                 <input type="hidden" class="form-control" id="am" name="rentalno" readonly >
                 <input type="hidden" class="form-control" id="am2" name="rentalno2" readonly >
+            <label for="am3">Your estimated price:</label>
+           <input type="text" class="form-control" id="am3" readonly>
+            <label for="amount">Final Price</label>
                 <input type="number" class="form-control" id="amount" name="rentalfinalprice" placeholder="" required>
 				<br> 
             
@@ -296,9 +308,11 @@
 		</div>
 		<div class="modal-body">
             <form>
-             <label for="amount">Amount</label>
+             
                 <input type="hidden" class="form-control" id="sam" name="servno" readonly >
                  <input type="hidden" class="form-control" id="sam2" name="servno2" readonly >
+                 <label for="sam3">Your estimated price:</label><input type="text" class="form-control" id="sam3"  readonly >
+                <label for="amount">Final Price</label>
                 <input type="number" class="form-control" id="amount" name="servicefinalprice" placeholder="" required>
 				<br> 
             
@@ -449,10 +463,12 @@
     $('.renteditamount').on('click', function(){
         $('#am').val($(this).data('rentno'))
         $('#am2').val($(this).data('itemno'))
+        $('#am3').val($(this).data('iprice'))
     })
     $('.serviceeditamount').on('click', function(){
         $('#sam').val($(this).data('serviceno'))
         $('#sam2').val($(this).data('genserviceno'))
+        $('#sam3').val($(this).data('sprice'))
     })
     $('.sreject').on('click', function(){
         $('#sr').val($(this).data('serviceno'))

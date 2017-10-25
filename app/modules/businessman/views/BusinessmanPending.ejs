@@ -22,7 +22,19 @@
 
                <div class="card" style="width: 20rem;">
                 <div class="card-block" >
-                
+                <% if (profile.intProviderStatus == 2) { %>
+
+                <h2 class="card-title"><strong>Hello Applicant!</strong></h2>
+                <br>
+                <div class="my-overflow" style="overflow-y: auto;height: 100px; max-height: 100px; width: 370px">
+                <h4>Sorry, your application has been rejected. But good news! You can request for application again.</h4>
+                </div>
+                <br>
+                <form>
+              <button type="submit" onclick="return confirm('Do you really want to apply?')" class="btn btn-primary" formmethod="post" formaction="/businessman/businessmanRequest">Apply again!</button>
+            </form>
+
+              <% } else{ %>
                 <h2 class="card-title"><strong>Welcome!</strong></h2>
                 <br>
                 <div class="my-overflow" style="overflow-y: auto;height: 100px; max-height: 100px; width: 370px">
@@ -33,6 +45,7 @@
                 <form>
 					<button type="submit" class="btn btn-primary" formmethod="get" formaction="/businessman/requirements">Show PDF</button>
 				</form>
+        <% } %>
                 
                 </div>
                 </div>

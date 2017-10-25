@@ -105,8 +105,9 @@ router.post('/businessmanLogin', (req,res)=>{
         else if (results.length > 0){
             req.session.user = results[0];
             
-            if (req.session.user.intProviderStatus == 0){
-                res.render('businessman/views/businessmanPending', {user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`} );
+            if (req.session.user.intProviderStatus == 0 || req.session.user.intProviderStatus == 2 ){
+                var profile = req.session.user;
+                res.render('businessman/views/businessmanPending', {profile: profile, user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`} );
             }
             else{
                 var service = 0;
@@ -187,7 +188,7 @@ router.post('/businessmanSignup', (req,res)=>{
                             req.session.user = resulta[0];
                             var profile = req.session.user;
 							console.log(req.session.user.intProviderStatus);
-                            if (req.session.user.intProviderStatus == 0){
+                            if (req.session.user.intProviderStatus == 0 || req.session.user.intProviderStatus == 2){
                                 res.render('businessman/views/businessmanPending', {profile: profile,user: `${req.session.user.strProviderFName}`+" "+ `${req.session.user.strProviderLName}`} );
                             }
                             else{
