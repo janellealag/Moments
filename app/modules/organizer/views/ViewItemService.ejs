@@ -48,23 +48,23 @@ th, td {
    <%if (service.length==0 && item.length==0){ %>
       <br><br>
       <center><h2>There's no item/service for this event.</h2></center>
-  <% } %>
-       <%if (item.length==0){ %>
-           
-            <%} else {%>
-	<div style="overflow-y: scroll;min-height:400;">
-    <table width="95%" >
+          <% } else {%>
+    <div style="overflow-y: scroll;min-height:400;">
+    <table width="95%" id="itemTable">
 	<tr style="border: 1px solid #ddd;">
 		<th>Name</th>
         <th>Type</th>
-		<th>Reservation Status</th>
-		<th>Final Price</th>
 		<th>Estimated Price</th>
 		<th>Refund Percentage</th>
-		<th>Date of Use</th>
+		<th>Provider Name</th>
 		<th>Actions</th>
 
 	</tr>
+        <% } %>
+       <%if (item.length==0){ %>
+           
+            <%} else {%>
+
     <% item.forEach(function(i){ %>
 	<tr style="border: 1px solid #ddd;">
 	

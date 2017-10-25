@@ -81,11 +81,8 @@ th, td {
     <%if (reServices.length==0 && reItems.length==0){ %>
     
     <center><h2> There's no searched Item/Service!</h2></center>
-    <% } %>
-      <%if (reItems.length==0){ %>
-          </div>
-            <%} else {%>
-	<div style="overflow-y: scroll;min-height:400;">
+    <% } else {%>
+    <div style="overflow-y: scroll;min-height:400;">
     <table width="95%" id="itemTable">
 	<tr style="border: 1px solid #ddd;">
 		<th>Name</th>
@@ -96,6 +93,11 @@ th, td {
 		<th>Actions</th>
 
 	</tr>
+        <% } %>
+      <%if (reItems.length==0){ %>
+          </div>
+            <%} else {%>
+	
     <% reItems.forEach(function(i,ctr){ %>
 	<tr style="border: 1px solid #ddd;">
 	

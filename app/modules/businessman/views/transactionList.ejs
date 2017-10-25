@@ -67,8 +67,14 @@
                     <td>
                       
                      
-                          <% if(j.intRentalStatus == 1) { %> 
+                        <% if(j.intRentalStatus == 1) { %> 
                         <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-iprice="<%= j.strEstimatedPrice %>" data-toggle="modal" data-target="#editAmount">Approve </button>
+                        <%}%>
+                        <% if(j.intRentalStatus == 0) { %> 
+                        <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-iprice="<%= j.strEstimatedPrice %>" data-toggle="modal" onclick="return confirm('NOTE: Email first the organizer before setting a price')" data-target="#editAmount">Approve </button>
+                        <%}%>
+                        <% if(j.intRentalStatus == 3) { %> 
+                        <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-iprice="<%= j.strEstimatedPrice %>" data-toggle="modal" onclick="return confirm('NOTE: Email first the organizer before setting a price')" data-target="#editAmount">Offer </button>
                         <%}%>
                          <% if(j.intRentalStatus == 2) { %> 
                         <button type="submit" class="renteditamount btn btn-secondary btn-sm" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>" data-iprice="<%= j.strEstimatedPrice %>" data-toggle="modal" data-target="#editAmount">Change final price </button>
@@ -78,6 +84,7 @@
                     <% if(j.intRentalStatus == 1){%> 
                         <button type="submit" class="ireject btn btn-secondary btn-sm" data-toggle="modal" data-target="#rejectItem" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>">Reject</button>
                         <% } %>
+                    
                     <% if(j.intRentalStatus == 2){%> 
                         <button type="submit" class="icancel btn btn-secondary btn-sm" data-toggle="modal" data-target="#cancelItem" data-rentno="<%=j.intTransactionNo%>" data-itemno="<%=j.intItemNo%>">Cancel</button>
                         <% } %>
@@ -132,6 +139,12 @@
                     <td>
                         <% if(j.intServiceStatus == 1) { %> 
                         <button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount" data-sprice="<%= j.strEstimatedPrice %>"  data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>">Approve </button> 
+                        <%}%>
+                        <% if(j.intServiceStatus == 0) { %> 
+                        <button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount" data-sprice="<%= j.strEstimatedPrice %>"  data-serviceno="<%=j.intTransactionNo%>" onclick="return confirm('NOTE: email first the organizer before setting a price')" data-genserviceno="<%= j.intGenServiceNo %>">Approve </button> 
+                        <%}%>
+                         <% if(j.intServiceStatus == 3) { %> 
+                        <button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount" data-sprice="<%= j.strEstimatedPrice %>"  data-serviceno="<%=j.intTransactionNo%>" onclick="return confirm('NOTE: email first the organizer before setting a price')" data-genserviceno="<%= j.intGenServiceNo %>">Offer </button> 
                         <%}%>
                         <% if(j.intServiceStatus == 2) { %>
                         <button type="submit" class="serviceeditamount btn btn-secondary btn-sm" data-toggle="modal" data-target="#serviceeditAmount" data-sprice="<%= j.strEstimatedPrice %>"  data-serviceno="<%=j.intTransactionNo%>" data-genserviceno="<%= j.intGenServiceNo %>">Change final price </button>
